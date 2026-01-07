@@ -1,0 +1,7 @@
+.hero-container {
+  background: var(--primary);
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

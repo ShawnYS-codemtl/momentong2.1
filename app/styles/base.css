@@ -1,0 +1,38 @@
+html {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-quicksand);
+  color: var(--white);
+  background: var(--background);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-family: var(--font-quicksand);
+  font-size: 48px;
+  font-weight: 500;
+}
+
+h3 {
+  font-family: var(--font-quicksand);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+p {
+  font-family: var(--font-quicksand);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
