@@ -4,4 +4,279 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 32px 100px;
+  padding: 30px 0;
+}
+
+.hero-container h1 {
+  /* font-size: 32px; */
+  text-align: center;
+  margin: 0 0 16px 0;
+  padding: 0 20px;
+}
+
+.hero-container h3 {
+  /* font-size: 20px; */
+  text-align: center;
+  margin: 0 0 12px 0;
+  padding: 0 20px;
+}
+
+.accent {
+  font-family: var(--font-dancing);
+  font-size: 80px;
+}
+
+.hero-stickers {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 100px;
+  list-style: none;
+  margin: 0 0 0 -60px;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.hero-stickers li {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-sticker {
+  object-fit: contain;
+}
+
+.hero-sticker-filmcam {
+  width: 360px;
+  height: 300px;
+}
+
+.hero-sticker-stamp {
+  width: 216px;
+  height: 288px;
+}
+
+.hero-sticker-bagel {
+  width: 280px;
+  height: 220px;
+}
+
+/* Medium desktop / Large tablet (1024px to 1439px) */
+@media (max-width: 1439px) {
+  .hero-container {
+    margin: 32px 60px;
+  }
+
+  .accent {
+    font-size: 70px;
+  }
+
+  .hero-stickers {
+    padding: 30px 60px;
+    gap: 32px;
+    margin-left: -40px;
+  }
+
+  .hero-sticker-filmcam {
+    width: 320px;
+    height: 267px;
+  }
+
+  .hero-sticker-stamp {
+    width: 192px;
+    height: 256px;
+  }
+
+  .hero-sticker-bagel {
+    width: 250px;
+    height: 196px;
+  }
+}
+
+/* Tablet (768px to 1023px) */
+@media (max-width: 1023px) {
+  .hero-container {
+    margin: 24px 40px;
+    border-radius: 24px;
+    padding: 32px 0;
+  }
+
+  .hero-container h1 {
+    font-size: 32px;
+    padding: 0 16px;
+  }
+
+  .hero-container h3 {
+    font-size: 24px;
+    padding: 0 16px;
+  }
+
+  .accent {
+    font-size: 56px;
+  }
+
+  .hero-stickers {
+    padding: 24px 40px;
+    gap: 24px;
+    margin-left: -30px;
+  }
+
+  .hero-sticker-filmcam {
+    width: 280px;
+    height: 233px;
+  }
+
+  .hero-sticker-stamp {
+    width: 168px;
+    height: 224px;
+  }
+
+  .hero-sticker-bagel {
+    width: 220px;
+    height: 173px;
+  }
+}
+
+/* Mobile (480px to 767px) */
+@media (max-width: 767px) {
+  .hero-container {
+    margin: 16px 20px;
+    border-radius: 20px;
+    padding: 24px 16px;
+  }
+
+  .hero-container h1 {
+    font-size: 24px;
+    padding: 0 12px;
+    margin-bottom: 12px;
+  }
+
+  .hero-container h3 {
+    font-size: 18px;
+    padding: 0 12px;
+    margin-bottom: 20px;
+  }
+
+  .accent {
+    font-size: 42px;
+  }
+
+  .hero-stickers {
+    padding: 20px 16px;
+    gap: 16px;
+    justify-content: center;
+    margin-left: -20px;
+  }
+
+  .hero-sticker-filmcam {
+    width: 200px;
+    height: 167px;
+  }
+
+  .hero-sticker-stamp {
+    width: 120px;
+    height: 160px;
+  }
+
+  .hero-sticker-bagel {
+    width: 160px;
+    height: 126px;
+  }
+}
+
+/* Small mobile (360px to 479px) */
+@media (max-width: 479px) {
+  .hero-container {
+    margin: 12px 16px;
+    border-radius: 16px;
+    padding: 20px 12px;
+  }
+
+  .hero-container h1 {
+    font-size: 18px;
+    padding: 0 8px;
+    margin-bottom: 10px;
+  }
+
+  .hero-container h3 {
+    font-size: 13px;
+    padding: 0 8px;
+    margin-bottom: 16px;
+  }
+
+  .accent {
+    font-size: 32px;
+  }
+
+  .hero-stickers {
+    padding: 16px 12px;
+    gap: 12px;
+    margin-left: -15px;
+  }
+
+  .hero-sticker-filmcam {
+    width: 160px;
+    height: 133px;
+  }
+
+  .hero-sticker-stamp {
+    width: 96px;
+    height: 128px;
+  }
+
+  .hero-sticker-bagel {
+    width: 128px;
+    height: 101px;
+  }
+}
+
+/* Extra small mobile (below 360px) */
+@media (max-width: 359px) {
+  .hero-container {
+    margin: 8px 12px;
+    border-radius: 12px;
+    padding: 16px 8px;
+  }
+
+  .hero-container h1 {
+    font-size: 16px;
+    padding: 0 6px;
+    margin-bottom: 8px;
+  }
+
+  .hero-container h3 {
+    font-size: 12px;
+    padding: 0 6px;
+    margin-bottom: 12px;
+  }
+
+  .accent {
+    font-size: 28px;
+  }
+
+  .hero-stickers {
+    padding: 12px 8px;
+    gap: 8px;
+    margin-left: -10px;
+  }
+
+  .hero-sticker-filmcam {
+    width: 140px;
+    height: 117px;
+  }
+
+  .hero-sticker-stamp {
+    width: 84px;
+    height: 112px;
+  }
+
+  .hero-sticker-bagel {
+    width: 112px;
+    height: 88px;
+  }
 }

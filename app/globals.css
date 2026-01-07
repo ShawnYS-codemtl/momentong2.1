@@ -1,10 +1,8 @@
-/* Import organized CSS files - all @import must come before any CSS rules */
-/* Variables first (needed by everything) */
 @import "tailwindcss";
 @import "./styles/variables.css";
-/* Then our custom styles */
+
 @import "./styles/base.css";
 @import "./styles/components/header.css";
 @import "./styles/components/navbar.css";
 @import "./styles/components/hero.css";
-/* Tailwind last (expands into CSS rules, so must be after all other imports) */
+
