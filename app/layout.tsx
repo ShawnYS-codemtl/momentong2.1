@@ -29,7 +29,15 @@ export default function RootLayout({
       > 
         <Header />
         <Navbar />
-        <main>
+        <main className="
+          mx-auto
+          px-4
+          sm:px-6
+          md:px-10
+          lg:px-16
+          xl:px-24
+          max-w-[1280px]
+        ">
           {children}
         </main>
       </body>

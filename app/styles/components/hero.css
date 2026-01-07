@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 32px 100px;
+  margin: 32px 0;
   padding: 30px 0;
 }
 
@@ -69,7 +69,7 @@
 /* Medium desktop / Large tablet (1024px to 1439px) */
 @media (max-width: 1439px) {
   .hero-container {
-    margin: 32px 60px;
+    margin: 32px 0;
   }
 
   .accent {
@@ -101,7 +101,7 @@
 /* Tablet (768px to 1023px) */
 @media (max-width: 1023px) {
   .hero-container {
-    margin: 24px 40px;
+    margin: 24px 0;
     border-radius: 24px;
     padding: 32px 0;
   }
@@ -145,7 +145,7 @@
 /* Mobile (480px to 767px) */
 @media (max-width: 767px) {
   .hero-container {
-    margin: 16px 20px;
+    margin: 16px 0;
     border-radius: 20px;
     padding: 24px 16px;
   }
@@ -192,7 +192,7 @@
 /* Small mobile (360px to 479px) */
 @media (max-width: 479px) {
   .hero-container {
-    margin: 12px 16px;
+    margin: 12px 0;
     border-radius: 16px;
     padding: 20px 12px;
   }
@@ -238,7 +238,7 @@
 /* Extra small mobile (below 360px) */
 @media (max-width: 359px) {
   .hero-container {
-    margin: 8px 12px;
+    margin: 8px 0;
     border-radius: 12px;
     padding: 16px 8px;
   }
