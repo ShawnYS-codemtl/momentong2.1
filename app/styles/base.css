@@ -7,7 +7,7 @@ html {
 
 body {
   font-family: var(--font-quicksand);
-  color: var(--white);
+  color: var(--dark-grey);
   background: var(--background);
   margin: 0;
   padding: 0;
@@ -19,6 +19,14 @@ h1 {
   font-family: var(--font-quicksand);
   font-size: 48px;
   font-weight: 500;
+}
+
+h2 {
+  font-family: var(--font-quicksand);
+  font-size: 32px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: normal;
 }
 
 h3 {
@@ -35,4 +43,9 @@ p {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+}
+
+.homepage-title {
+  color: black;
+  margin: 32px 0;
 }

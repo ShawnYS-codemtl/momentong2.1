@@ -9,6 +9,7 @@
   background: var(--primary-dark);
   padding: 0 7%;
   box-sizing: border-box;
+  color: var(--white)
 }
 
 .navbar-links {
@@ -21,9 +22,15 @@
   justify-content: center;
 }
 
+.navbar-links li:hover {
+  border-bottom: 2px solid #E6B12A;
+}
+
 .navbar-links li {
   margin: 0;
   padding: 0;
+  border-bottom: 2px solid transparent; /* reserve space */
+  transition: border-color 0.3s;
 }
 
 .navbar-links li h3 {
@@ -44,6 +51,11 @@
   width: 32px;
   height: 32px;
   flex-shrink: 0;
+  transition: filter 0.3s;
+}
+
+.navbar-icon:hover {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(92%) saturate(2829%) hue-rotate(150deg) brightness(95%) contrast(90%);
 }
 
 /* Large desktop (1440px and above) - base styles already set */
