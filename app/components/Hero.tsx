@@ -7,7 +7,8 @@ import Image from "next/image"
 export default function Hero () {
     return (
         <div className="hero-container">
-            <h1>Because some <span className="accent">moments</span> deserve to <span className="accent">stick</span></h1>
+            <h1>Because some <span className="accent stroke-word">moments</span> deserve to <span className="accent">stick</span>
+            </h1>
             <h3>Little pieces of my story, turned into stickers you might see yourself in.</h3>
             <ul className="hero-stickers">
                 <li><Image src={FilmCam} alt="film cam sticker" className="hero-sticker hero-sticker-filmcam" width={300} height={236}></Image></li>
