@@ -5,6 +5,12 @@
   --primary-dark: #167653;
   --white: #ffffff;
   --black: #000000;
+  --dark-grey: #333333;
   --secondary: #ffe4c4;
   --gradient: linear-gradient(90deg, rgba(230, 177, 42, 0.75) 0%, rgba(18, 144, 190, 0.88) 50%, rgba(222, 100, 201, 0.72) 100%);
+  --hover: #1290BE;
+  --bisque: #ffe4c4;
+  --accent-pink: #DE64C9;
+  --button: #E6B12A;
+
 }
