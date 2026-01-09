@@ -9,7 +9,10 @@
   background: var(--primary-dark);
   padding: 0 7%;
   box-sizing: border-box;
-  color: var(--white)
+  color: var(--white);
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .navbar-links {
