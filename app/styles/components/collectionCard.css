@@ -1,20 +1,29 @@
 .collection-card-container {
     border-radius: 64px;
-    border: 1px solid black;
     padding: 63px;
     aspect-ratio: 1/1;
-    width: 390px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /*  */
     background: linear-gradient(135deg, rgba(230,177,42,0.2), rgba(222,100,201,0.2));
-    box-shadow: 0 2px 2px var(--black), 0 4px 10px var(--black);
-    margin-bottom: 50px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    margin: 32px 0;
+    gap: 12px;
+}
+
+.collection-card-container:hover {
+    outline: 2px solid rgba(0,0,0,0.08);
+  }
+
+.location-container {
+    margin-bottom: 20px;
 }
 
 .flex-container {
     display: flex;
     gap: 63px;
+    align-items: baseline;
+
 }
 
 .favourite {

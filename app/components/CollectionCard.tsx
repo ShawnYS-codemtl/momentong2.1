@@ -1,4 +1,4 @@
-type CollectionCardProps = {
+export type CollectionCardProps = {
     location: string
     theme: string
     stickerCount: number
@@ -14,7 +14,11 @@ type CollectionCardProps = {
     // onClick,
   }: CollectionCardProps) {
     return (
-      <div className='collection-card-container'>
+      <div className='collection-card-container "
+    w-[350px]
+    sm:w-[370px]
+    md:w-[390px]
+  "'>
         <div className="location-container">
             <h3>Location</h3>
             <h2>{location}</h2>
