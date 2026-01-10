@@ -10,7 +10,7 @@ import Image from "next/image"
 export default function Header() {
   return (
     <div className="logo-container">
-        <Image src={Logo} alt="Logo" width={276} height={206} />
+        <Image src={Logo} alt="Logo" width={276} height={206} className="logo" />
         <Image src={Vitasoy} alt="vitasoy" className="sticker-1 h-sticker" width={300} height={301}/>
         <Image src={Tofu} alt="tofu" className="sticker-2 h-sticker" width={300} height={254}/>
         <Image src={Tram} alt="tram" className="sticker-3 h-sticker" width={300} height={314}/>

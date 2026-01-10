@@ -1,0 +1,46 @@
+.sticker-card {
+    width: 286px;
+    height: 286px;
+    background-color: var(--bisque);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    padding: 1ch;
+    position: relative;
+    overflow: hidden;
+}
+
+.sticker-card:hover {
+    outline: 2px solid rgba(0,0,0,0.08);
+}
+
+.sticker-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.sticker-info {
+    padding: 8px 10px;
+}
+
+.sticker-container {
+    margin: 32px 0;
+}
+
+.add-btn {
+    position: absolute;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary);
+    top: 243px;
+    left: 245px;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

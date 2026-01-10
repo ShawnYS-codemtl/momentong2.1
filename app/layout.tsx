@@ -30,14 +30,14 @@ export default function RootLayout({
         <Header />
         <Navbar />
         <main className="
-          mx-auto
-          px-4
-          sm:px-6
-          md:px-10
-          lg:px-16
-          xl:px-24
-          max-w-[1280px]
-        ">
+             mx-auto
+            max-w-[1440px]
+            px-4
+            sm:px-6
+            md:px-10
+            lg:px-12
+            xl:px-[50px]
+          ">
           {children}
         </main>
       </body>
