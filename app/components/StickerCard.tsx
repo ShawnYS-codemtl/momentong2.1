@@ -1,6 +1,6 @@
 "use client";
 
-type StickerCardProps = {
+export type StickerCardProps = {
     image: string
     title: string
     width: number
