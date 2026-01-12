@@ -1,18 +1,12 @@
-export type CollectionCardProps = {
-    location: string
-    theme: string
-    stickerCount: number
-    favourite: string
-    // onClick?: () => void
-  }
+import type { CollectionSummary } from "@/types/collection"
   
+export type CollectionCardProps = {
+  collection: CollectionSummary
+}
   export default function CollectionCard({
-    location,
-    theme,
-    stickerCount,
-    favourite,
-    // onClick,
+    collection
   }: CollectionCardProps) {
+    const { id, slug, location, theme, description, favoriteLabel, stickerCount } = collection
     return (
       <div className='collection-card-container "
     w-[350px]
@@ -34,7 +28,7 @@ export type CollectionCardProps = {
             </div>
             <div className="favourite-container">
                 <h4>Favourite</h4>
-                <h3 className="favourite">{favourite}</h3>
+                <h3 className="favouriteLabel">{favoriteLabel}</h3>
             </div>
         </div>
       </div>

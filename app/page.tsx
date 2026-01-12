@@ -1,17 +1,11 @@
-"use client";
-
 import Hero from "./components/Hero";
 import CollectionGrid from "./components/CollectionGrid";
-import StickerCard from "./components/StickerCard";
 import StickerGrid from "./components/StickerGrid";
+import { getAllCollections } from "@/lib/data/collections";
 
-export default function Home() {
+export default async function Home() {
 
-  const collections = [
-    { location: "Hong Kong", theme: "Childhood", stickerCount: 7, favourite: "Vita Soy" },
-    { location: "London", theme: "Independence", stickerCount: 3, favourite: "Typewriter" },
-    { location: "Montreal", theme: "Maturing", stickerCount: 4, favourite: "McGill" },
-  ];
+  const featuredCollections = await getAllCollections();
 
   const stickers = [
     {
@@ -51,7 +45,7 @@ export default function Home() {
     <div className="main-container">
       <Hero/>
       <h2 className="homepage-title">Collections</h2>
-      <CollectionGrid collections={collections} />
+      <CollectionGrid collections={featuredCollections} />
       <h2 className="homepage-title">Stickers</h2>
       <StickerGrid stickers={stickers} />
     </div>

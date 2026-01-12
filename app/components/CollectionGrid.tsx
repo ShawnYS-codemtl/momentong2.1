@@ -1,15 +1,15 @@
 import CollectionCard from "./CollectionCard";
-import { CollectionCardProps } from "./CollectionCard";
+import type { CollectionSummary } from "@/types/collection";
 
 type Props = {
-  collections: CollectionCardProps[];
+  collections: CollectionSummary[];
 };
 
 export default function CollectionGrid({ collections }: Props) {
   return (
     <div className="grid gap-x-9  gap-y-0 justify-center [grid-template-columns:repeat(auto-fit,minmax(350px,390px))]">
       {collections.map((c, i) => (
-        <CollectionCard key={i} {...c} />
+        <CollectionCard collection={c} key={c.id}/>
       ))}
     </div>
   );
