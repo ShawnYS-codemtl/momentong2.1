@@ -1,8 +1,9 @@
 import StickerCard from "./StickerCard";
-import {StickerCardProps} from "./StickerCard";
+import type { Sticker } from "@/types/sticker";
+import { getStickerUrl } from "@/lib/data/stickers";
 
 type Props = {
-    stickers: StickerCardProps[];
+    stickers: Sticker[];
 };
 
 export default function StickerGrid({stickers}: Props) {
@@ -14,10 +15,10 @@ export default function StickerGrid({stickers}: Props) {
         justify-center
         [grid-template-columns:repeat(auto-fit,286px)]
       ">
-        {stickers.map((s, i) => (
-            <StickerCard key={i} {...s} />
+        
+        {stickers.map((s) => (
+            <StickerCard key={s.sid} {...s} />
         ))}
       </div>
-
     )
 }

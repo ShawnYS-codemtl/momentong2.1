@@ -1,35 +1,29 @@
-"use client";
-
-export type StickerCardProps = {
-    image: string
-    title: string
-    width: number
-    height: number
-}
-
+import { getStickerUrl } from "@/lib/data/stickers";
+import type { Sticker } from "@/types/sticker";
 import Image from "next/image"
-import MilkTea from "@/public/milk_tea 1.svg"
+import Link from "next/link";
 
-
-export default function StickerCard({image, title, width, height} : StickerCardProps){
+export default function StickerCard(props : Sticker){
     return (
-        <div className="sticker-container">
-            <div className="sticker-card">
-                <Image 
-                    src={image} 
-                    alt={title}
-                    width={width}
-                    height={height}
-                >
-                </Image>
-                <button className="add-btn">
-                +
-                </button>
+        <Link href={`/stickers/${props.slug}`} className="block">
+            <div className="sticker-container">
+                <div className="sticker-card">
+                    <Image 
+                        src={getStickerUrl(props.image_path)} 
+                        alt={props.title}
+                        width={props.width}
+                        height={props.height}
+                    >
+                    </Image>
+                    <button className="add-btn">
+                    +
+                    </button>
+                </div>
+                <div className="sticker-info">
+                    <h4>{props.title.toUpperCase()}</h4>
+                    <p>$3.00 CAD</p>
+                </div>
             </div>
-            <div className="sticker-info">
-                <h4>{title.toUpperCase()}</h4>
-                <p>$3.00 CAD</p>
-            </div>
-        </div>
+        </Link>
     )
 }

@@ -10,9 +10,9 @@ export default function Navbar() {
       <ul className="navbar-links">
         <li><Link href="/"><h3>Home</h3></Link></li>
         <li><Link href="/collections"><h3>Collections</h3></Link></li>
-        <li><Link href="/shop"><h3>Shop</h3></Link></li>
-        <li><Link href="/timeline"><h3>Timeline</h3></Link></li>
+        <li><Link href="/stickers"><h3>Stickers</h3></Link></li>
         <li><Link href="/about"><h3>About</h3></Link></li>
+        <li><Link href="/admin"><h3>Admin</h3></Link></li>
       </ul>
       <ul className="navbar-icons">
         <Image src={UserIcon} alt="User Icon" width={32} height={32} className="navbar-icon" />
