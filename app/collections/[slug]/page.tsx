@@ -2,6 +2,7 @@
 import { getStickersByCollectionSlug } from '@/lib/data/stickers'
 import StickerGrid from '@/app/components/StickerGrid'
 import { formatSlug } from '@/lib/utils/formatSlug'
+import Breadcrumb from '@/app/components/Breadcrumb'
 
 interface Params {
   params: { slug: string }
@@ -14,10 +15,15 @@ export default async function CollectionPage({ params }: Params) {
   if (!stickers || stickers.length === 0) {
     return <p>No stickers found for this collection.</p>
   }
-
   return (
     <main>
-      <h4 className='mt-8'>Home&nbsp;&nbsp;&gt;&nbsp;&nbsp;Collections&nbsp;&nbsp;&gt;&nbsp;&nbsp;{formatSlug(slug)}</h4>
+      <Breadcrumb
+        items={[
+          {label: 'Home', href: '/'},
+          {label: 'Collections', href: '/collections'},
+          {label: formatSlug(slug)}
+        ]}
+        />
       <StickerGrid stickers={stickers} />
     </main>
   )
