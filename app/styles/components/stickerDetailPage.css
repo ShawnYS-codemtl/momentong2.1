@@ -1,0 +1,47 @@
+.sticker-detail-left {
+    background-color: var(--bisque);
+    border: 1px solid black;
+    width: 604px;
+    height: 604px;
+    border-radius: 32px;
+}
+
+.sticker-detail-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.sticker-detail-info  p {
+    font-weight: 500;
+}
+
+.quantity-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 26px; 
+    font-size: 24px;
+    font-family: var(--quicksand);
+    cursor: pointer;
+    border: 1px solid #00000080;
+  }
+
+  .quantity-button span {
+    padding: 0 24px;
+  }
+
+  .add-to-cart-btn {
+    display: flex;
+    padding: 16px 91px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #4F505C;
+    background: var(--primary);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25), 0 2px 2px 0 rgba(0, 0, 0, 0.25);
+    font-weight: 500;
+    font-size: 16px;
+  }
