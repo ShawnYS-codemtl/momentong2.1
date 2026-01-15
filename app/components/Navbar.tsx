@@ -12,12 +12,12 @@ export default function Navbar() {
         <li><Link href="/collections"><h3>Collections</h3></Link></li>
         <li><Link href="/stickers"><h3>Stickers</h3></Link></li>
         <li><Link href="/about"><h3>About</h3></Link></li>
-        <li><Link href="/admin"><h3>Admin</h3></Link></li>
+        <li><Link href="/contact"><h3>Contact</h3></Link></li>
       </ul>
       <ul className="navbar-icons">
         <Image src={UserIcon} alt="User Icon" width={32} height={32} className="navbar-icon" />
         <Image src={HeartIcon} alt="Heart Icon" width={32} height={32} className="navbar-icon" />
-        <Image src={BagIcon} alt="Bag Icon" width={32} height={32} className="navbar-icon" />
+        <Image src={BagIcon} alt="Bag Icon" width={32} height={32} className="navbar-icon -translate-y-1" />
       </ul>
     </nav>
   )

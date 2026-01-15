@@ -2,6 +2,7 @@ import "./globals.css";
 import {Quicksand, Dancing_Script} from "next/font/google"
 import Header from "./components/Header"
 import Navbar from "./components/Navbar"
+import Footer from "./components/Footer";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({
           ">
           {children}
         </main>
+        <Footer/>
       </body>
     </html>
   );
