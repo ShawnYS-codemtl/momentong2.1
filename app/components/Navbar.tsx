@@ -1,24 +1,129 @@
-import Image from "next/image"
-import Link from "next/link"
-import UserIcon from "@/public/user-icon.svg"
-import HeartIcon from "@/public/Heart.svg"
-import BagIcon from "@/public/bag-icon.svg"
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import UserIcon from '@/public/user-icon.svg'
+import HeartIcon from '@/public/Heart.svg'
+import BagIcon from '@/public/bag-icon.svg'
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false)
+
   return (
-    <nav className="navbar-container">
-      <ul className="navbar-links">
-        <li><Link href="/"><h3>Home</h3></Link></li>
-        <li><Link href="/collections"><h3>Collections</h3></Link></li>
-        <li><Link href="/stickers"><h3>Stickers</h3></Link></li>
-        <li><Link href="/about"><h3>About</h3></Link></li>
-        <li><Link href="/contact"><h3>Contact</h3></Link></li>
-      </ul>
-      <ul className="navbar-icons">
-        <Image src={UserIcon} alt="User Icon" width={32} height={32} className="navbar-icon" />
-        <Image src={HeartIcon} alt="Heart Icon" width={32} height={32} className="navbar-icon" />
-        <Image src={BagIcon} alt="Bag Icon" width={32} height={32} className="navbar-icon -translate-y-1" />
-      </ul>
-    </nav>
+    <>
+      <nav className="
+        sticky top-0 z-50
+        w-full
+        flex items-center justify-between
+        bg-[var(--primary-dark)]
+        text-white
+        px-[6%] md:px-[5%] lg:px-[6%]
+        shadow-md
+      ">
+        {/* Desktop links */}
+        <ul className="
+          hidden md:flex
+          flex-1
+          justify-center
+          items-center
+          gap-[6%]
+          py-6
+        ">
+          {['Home', 'Collections', 'Stickers', 'About', 'Contact'].map((label) => (
+            <li
+              key={label}
+              className="
+                border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors
+              "
+            >
+              <Link href={`/${label === 'Home' ? '' : label.toLowerCase()}`}>
+                <h3 className="whitespace-nowrap">
+                  {label}
+                </h3>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop icons */}
+        <div className="hidden md:flex items-center gap-5 ml-4">
+          <Image src={UserIcon} alt="User" width={32} height={32} className="navbar-icon" />
+          <Image src={HeartIcon} alt="Wishlist" width={32} height={32} className="navbar-icon" />
+          <Image src={BagIcon} alt="Bag" width={32} height={32} className="navbar-icon" />
+        </div>
+
+        {/* Mobile burger */}
+        <button
+          onClick={() => setOpen(true)}
+          className="md:hidden flex flex-col gap-1 my-3"
+          aria-label="Open menu"
+        >
+          <span className="w-6 h-0.5 bg-white" />
+          <span className="w-6 h-0.5 bg-white" />
+          <span className="w-6 h-0.5 bg-white" />
+        </button>
+      </nav>
+
+      {open && <MobileMenu onClose={() => setOpen(false)} />}
+    </>
+  )
+}
+
+function MobileMenu({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50">
+      <div className="
+        absolute right-0 top-0
+        h-full w-4/5
+        bg-[var(--primary-dark)]
+        text-white
+        p-6
+        flex flex-col
+      ">
+        <button
+          onClick={onClose}
+          className="self-end text-2xl mb-8"
+        >
+          ×
+        </button>
+
+        <nav className="flex flex-col gap-6 text-lg">
+          <Link href="/" 
+                className="border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors"
+                onClick={onClose}>Home</Link>
+          <Link href="/collections" 
+                className="border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors"
+                onClick={onClose}>Collections</Link>
+          <Link href="/stickers" 
+                className="border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors"
+                onClick={onClose}>Stickers</Link>
+          <Link href="/about" 
+                className="border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors"
+                onClick={onClose}>About</Link>
+          <Link href="/contact" 
+                className="border-b-2 border-transparent
+                hover:border-[#E6B12A]
+                transition-colors"
+                onClick={onClose}>Contact</Link>
+        </nav>
+
+        <div className="mt-auto flex gap-6">
+          <Image src={UserIcon} alt="User" width={24} height={24} className="navbar-icon"/>
+          <Image src={HeartIcon} alt="Wishlist" width={24} height={24} className="navbar-icon"/>
+          <Image src={BagIcon} alt="Bag" width={24} height={24} className="navbar-icon" />
+        </div>
+      </div>
+    </div>
   )
 }
