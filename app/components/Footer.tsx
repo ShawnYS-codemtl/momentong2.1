@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import Logo from "@/public/logo.svg"
+import { InstagramIcon } from "./InstagramIcon"
 // import { InstagramIcon, TwitterIcon, TikTokIcon } from "@/app/components/Icons" // placeholder icons
 
 export default function Footer() {
@@ -11,7 +12,7 @@ export default function Footer() {
         <div className="flex-[1] max-w-full">
           <Image src={Logo} alt="logo" width={200}></Image>
           <p className="text-gray-200 mt-2 mb-12">
-            Capture, collect, and cherish your memories
+            Moments pass, memories stay, one sticker seals the story.
           </p>
         </div>
 
@@ -49,7 +50,7 @@ export default function Footer() {
                     <Link href="/admin" className="hover:underline hover:decoration-[var(--button)] underline-offset-4">
                         Admin
                     </Link>
-                    </li>
+                    </li> 
                 </ul>
             </div>
 
@@ -57,15 +58,14 @@ export default function Footer() {
             <div className="flex flex-col gap-1">
                 <h3 className="font-semibold mb-2">Follow</h3>
                 <div className="flex space-x-4">
-                    <Link href="#" aria-label="Instagram" className="hover:text-pink-500">
-                    IG
-                    </Link>
-                    <Link href="#" aria-label="Twitter" className="hover:text-blue-400">
-                        Twitter
-                    </Link>
-                    <Link href="#" aria-label="TikTok" className="hover:text-black">
-                    Tiktok
-                    </Link>
+                  <a
+                    href="https://instagram.com/momento.ng/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-pink-500 transition"
+                  >
+                    <InstagramIcon className="w-6 h-6 text-white hover:text-pink-500 cursor-pointer transition" />
+                  </a>
                 </div>
             </div>
 
@@ -74,7 +74,7 @@ export default function Footer() {
                 <h3 className="font-semibold mb-2">Legal</h3>
                 <ul className="space-y-1 text-gray-400 text-sm">
                     <li>
-                    <Link href="/privacy" className="hover:underline hover:decoration-[var(--primary-color)] underline-offset-4">
+                    <Link href="/privacy" target='_blank' className="hover:underline hover:decoration-[var(--primary-color)] underline-offset-4">
                         Privacy Policy
                     </Link>
                     </li>
