@@ -4,6 +4,7 @@ import Image from "next/image"
 import { formatSlug } from "@/lib/utils/formatSlug"
 import Accordion from "@/app/components/Accordion"
 import Breadcrumb from "@/app/components/Breadcrumb"
+import StickerPurchase from "@/app/components/StickerPurchase"
 
 interface Params {
     params: { slug: string }
@@ -12,6 +13,9 @@ interface Params {
 export default async function StickerDetailPage({params} : Params){
     const {slug} = await params
     const sticker = await getStickerBySlug(slug)
+    const stickerImageUrl = getStickerUrl(sticker.image_path) 
+
+    let selectedQuantity = 1
 
     return (
         <main className="px-[100px]">
@@ -35,20 +39,14 @@ export default async function StickerDetailPage({params} : Params){
                 </div>
                 <div className="sticker-detail-info px-8">
                     <h2 className="mb-3">{sticker.title.toUpperCase()}</h2>
-                    <h3 className="mb-4">$ {sticker.price.toFixed(2)} CAD</h3>
+                    <h3 className="mb-4">$ {(sticker.price/100).toFixed(2)} CAD</h3>
                     <hr />
                     <ul className="my-5 flex flex-col gap-[10px] ">
                         <li><p>💧 Dishwasher safe</p></li>
                         <li><p>☂️ Weatherproof</p></li>
                         <li><p>⭐️ Fade resistant</p></li>
                     </ul>
-                    <p>Quantity</p>
-                    <div className="quantity-button mt-3">
-                        <button>-</button>
-                        <span> 0 </span>
-                        <button>+</button>
-                    </div>
-                    <button className="add-to-cart-btn my-9">ADD TO CART  - ${sticker.price.toFixed(2)}</button>
+                    <StickerPurchase sticker={{ ...sticker, image_path: stickerImageUrl }}/>
                     <hr />
                     <Accordion title="Description">
                         <p>{sticker.description}</p>
