@@ -2,8 +2,10 @@ import { getStickerUrl } from "@/lib/data/stickers";
 import type { Sticker } from "@/types/sticker";
 import Image from "next/image"
 import Link from "next/link";
+import AddToBagButton from "./AddToBagButton";
 
 export default function StickerCard(props : Sticker){
+
     return (
         <Link href={`/stickers/${props.slug}`} className="block">
             <div className="sticker-container">
@@ -15,13 +17,17 @@ export default function StickerCard(props : Sticker){
                         height={props.height}
                     >
                     </Image>
-                    <button className="add-btn">
-                    +
-                    </button>
+                    <AddToBagButton
+                         productId={props.sid}
+                         title= {props.title}
+                         price={props.price}
+                         image={getStickerUrl(props.image_path)}
+                         className="add-btn hover:scale-110"
+                    />
                 </div>
                 <div className="sticker-info">
                     <h4>{props.title.toUpperCase()}</h4>
-                    <p>$3.00 CAD</p>
+                    <p>$ {(props.price/100).toFixed(2)} CAD</p>
                 </div>
             </div>
         </Link>

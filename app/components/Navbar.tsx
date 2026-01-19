@@ -6,9 +6,12 @@ import Image from 'next/image'
 import UserIcon from '@/public/user-icon.svg'
 import HeartIcon from '@/public/Heart.svg'
 import BagIcon from '@/public/bag-icon.svg'
+import { useBag } from '../context/BagContext'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const {items} = useBag()
+  const count = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <>
@@ -25,7 +28,7 @@ export default function Navbar() {
         <ul className="
           hidden md:flex
           flex-1
-          justify-center
+          justify-around
           items-center
           gap-[6%]
           py-6
@@ -46,14 +49,25 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <li>
+            <Link href='/cart' className='relative inline-block'>
+              <Image src={BagIcon} alt="Bag" width={32} height={32} className="navbar-icon mb-2" />
+              <span className="
+              absolute -top-2 -right-2
+              bg-red-500 text-white text-xs font-bold
+              rounded-full px-1.5 py-0.5
+            ">{count}
+            </span>
+            </Link>
+          </li>
         </ul>
 
-        {/* Desktop icons */}
+        {/* Desktop icons
         <div className="hidden md:flex items-center gap-5 ml-4">
           <Image src={UserIcon} alt="User" width={32} height={32} className="navbar-icon" />
           <Image src={HeartIcon} alt="Wishlist" width={32} height={32} className="navbar-icon" />
           <Image src={BagIcon} alt="Bag" width={32} height={32} className="navbar-icon" />
-        </div>
+        </div> */}
 
         {/* Mobile burger */}
         <button

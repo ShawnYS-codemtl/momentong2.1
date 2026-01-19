@@ -3,6 +3,7 @@ import {Quicksand, Dancing_Script} from "next/font/google"
 import Header from "./components/Header"
 import Navbar from "./components/Navbar"
 import Footer from "./components/Footer";
+import { BagProvider } from "./context/BagContext";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -29,19 +30,23 @@ export default function RootLayout({
         className={`${quicksand.variable} ${dancingScript.variable}`}
       > 
         <Header />
-        <Navbar />
-        <main className="
-             mx-auto
-            max-w-[1440px]
-            px-4
-            sm:px-6
-            md:px-10
-            lg:px-12
-            xl:px-[50px]
-          ">
-          {children}
-        </main>
-        <Footer/>
+        <BagProvider>
+          <Navbar />
+          <main className="
+              mx-auto
+              max-w-[1440px]
+              px-4
+              sm:px-6
+              md:px-10
+              lg:px-12
+              xl:px-[50px]
+            ">
+            
+                {children}
+            
+          </main>
+          <Footer/>
+        </BagProvider>
       </body>
     </html>
   );
