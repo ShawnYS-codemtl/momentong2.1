@@ -1,7 +1,7 @@
 // types/sticker.ts
 export type Sticker = {
-    sid: number
-    collection_id: number
+    sid: string
+    collection_id: string
     title: string
     image_path: string          // path in Supabase Storage
     width: number
