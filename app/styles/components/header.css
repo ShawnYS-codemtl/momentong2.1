@@ -30,6 +30,7 @@
 }
 
 .sticker-1 {
+  width: 300px;
   top: -30px;
   left: -50px;
   transform: rotate(-19.76deg);
@@ -53,21 +54,25 @@
 .sticker-4 {
   width: 257px;
   top: 55px;
-  left: 896px;
+  right: 287px; /* 1440 - (896 + 257) */
+  left: auto;
   transform: rotate(-3.409deg);
   z-index: 2;
 }
 
 .sticker-5 {
+  width: 300px;
   top: -26px;
-  left: 1023px;
+  right: 117px;
+  left: auto;
   z-index: 3;
 }
 
 .sticker-6 {
  width: 236px;
  top: -20px;
- left: 1190px;
+ right: 14px; /* 1440 - (1190 + 236) */
+ left: auto;
  transform: rotate(12.275deg); 
  z-index: 2;
 }
@@ -75,9 +80,9 @@
 @media (max-width: 1280px) {
   .sticker-2 { width: 200px; left: 120px; top: 90px; }
   .sticker-3 { width: 210px; left: 240px; }
-  .sticker-4 { width: 230px; left: 760px; }
-  .sticker-5 { width: 280px; left: 870px;}
-  .sticker-6 { width: 210px; left: 1020px; }
+  .sticker-4 { width: 230px; right: 180px; }
+  .sticker-5 { width: 280px; right: 50px;}
+  .sticker-6 { width: 210px; right: 4px; }
 }
 
 @media (max-width: 1024px) {
@@ -99,19 +104,22 @@
 
   .sticker-4 {
     width: 190px;
-    left: 560px;
+    right: 134px;
+    /* left: 560px; */
     top: 40px;
   }
 
   .sticker-5 {
     width: 180px;
-    left: 680px;
+    right: 50px;
+    /* left: 680px; */
     top: 0px;
   }
 
   .sticker-6 {
     width: 180px;
-    left: 750px;
+    right: 5px;
+    /* left: 750px; */
     top: -10px;
   }
 }
@@ -119,40 +127,39 @@
 @media (max-width: 768px) {
 
   .sticker-1 {
-    width: 120px;
+    width: 150px;
     left: -20px;
     top: 30px;
   }
 
   .sticker-2 {
-    width: 110px;
+    width: 140px;
     left: 60px;
     top: 80px;
   }
 
   .sticker-3 {
-    width: 140px;
+    width: 160px;
     left: 120px;
     top: 20px;
   }
 
   .sticker-4 {
-    width: 140px;
-    left: 450px;
+    width: 165px;
+    right: 128px;
     top: 40px;
   }
 
   .sticker-5 {
-    width: 140px;
-    right: 40px;
+    width: 160px;
+    right: 30px;
     left: auto;
     top: 10px;
   }
 
   .sticker-6 {
-    width: 140px;
-    left: 570px;
-    right: auto;
+    width: 148px;
+    right: 20px;
     top: 65px;
   }
 }
