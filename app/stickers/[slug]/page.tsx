@@ -18,7 +18,7 @@ export default async function StickerDetailPage({params} : Params){
     let selectedQuantity = 1
 
     return (
-        <main className="px-[100px]">
+        <main className="px-4 md:px-8 lg:px-[100px]">
             <Breadcrumb 
                 items={[
                     {label: 'Home', href: '/'},
@@ -26,18 +26,18 @@ export default async function StickerDetailPage({params} : Params){
                     {label: formatSlug(slug)}
                 ]}
             />
-            <div className="flex my-8">
-                <div className="sticker-detail-left">
+            <div className="flex flex-col lg:flex-row my-8 gap-8 lg:gap-0">
+                <div className="sticker-detail-left flex justify-center lg:justify-start mx-auto relative">
                     <Image
-                        className="sticker-detail-img"
+                        className="sticker-detail-img max-w-full h-auto sm:max-w-[280px] md:max-w-[340px] lg:max-w-none"
                         src={getStickerUrl(sticker.image_path)}
                         alt={sticker.title}
-                        width={sticker.width}
-                        height={sticker.height}
+                        fill
+                        sizes="(max-width: 1024px) 90vw, 604px"
                         >
                     </Image>
                 </div>
-                <div className="sticker-detail-info px-8">
+                <div className="sticker-detail-info px-0 lg:px-8">
                     <h2 className="mb-3">{sticker.title.toUpperCase()}</h2>
                     <h3 className="mb-4">$ {(sticker.price/100).toFixed(2)} CAD</h3>
                     <hr />
