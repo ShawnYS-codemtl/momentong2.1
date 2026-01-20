@@ -17,7 +17,7 @@ export default function StickerPurchase({ sticker }: Props) {
       <p className="mb-2 font-bold">Quantity</p>
 
       <QuantitySelector
-        initialQuantity={quantity}
+        quantity={quantity}
         onChange={setQuantity} // now safe, client → client
       />
 
