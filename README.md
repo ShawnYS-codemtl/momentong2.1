@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Sticker E-Commerce Platform — Personal Project
 
-## Getting Started
+Designed and built a full-stack e-commerce platform using Next.js, React, and TypeScript, supporting themed sticker collections, dynamic product pages, and a mobile-first shopping experience.
 
-First, run the development server:
+Led the end-to-end product and UI/UX design process in Figma, translating high-fidelity designs into a scalable and maintainable React component architecture.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Designed and implemented a Supabase (PostgreSQL) data model for products, collections, inventory, and orders, integrating it securely through server-side application logic.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Integrated Stripe for secure checkout and payment processing, including webhook handling for order confirmation and order state management.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Implemented server-side email workflows using Nodemailer for customer contact and transactional notifications.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Optimized performance, SEO, and user experience using server-side rendering, static generation, and image optimization in Next.js.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+React Context = A way to create a globally accessible state container inside your React app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+It lets you:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Store data once
 
-## Deploy on Vercel
+Read/update it from any component
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Avoid prop-drilling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Context is not storage by itself.
+It’s just a shared in-memory state.
+
+Next Steps:
+
+- Webhooks
+    - Verify payment amount → check against server-side totals
+    - Update orders → save order details to your database
+    - Inventory reconciliation → decrease stock levels
+    - Send confirmation emails → optional, via SMTP or email service   -> include shipping address for myself
+
+- About Page
+- Admin page
+- Payment setup
+- search
+- Clean up tailwind and css
+- Description for collections
+- update sticker descriptions, prices
+- upadte additional info in detail page
+- add note to cart page
+
+
+Ideas:
+- Size options
+- Sorting/filtering
+- User-submitted sticker ideas
+- Community stickers
+- sorting all stickers
