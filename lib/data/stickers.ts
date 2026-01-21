@@ -95,3 +95,26 @@ if (error) {
 
 return data
 }
+
+export async function getStickerById(id: string): Promise<Sticker> {
+  console.log('getting sticker by id')
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+      .from('stickers')
+      .select('*')
+      .eq('sid', id)
+      .single()
+  
+  if (error) {
+    console.error(`Failed to fetch sticker with id: ${id}`, error)
+    throw new Error(`Sticker not found: ${id}`)
+  }
+
+  // Validate fields needed for Stripe
+  if (typeof data.price !== 'number' || !data.title) {
+    throw new Error(`Sticker data invalid for Stripe: ${id}`)
+  }
+  
+  return data
+}

@@ -18,15 +18,15 @@ export default async function StickerDetailPage({params} : Params){
     let selectedQuantity = 1
 
     return (
-        <main className="px-4 md:px-8 lg:px-[100px]">
-            <Breadcrumb 
+        <main>
+            <Breadcrumb
                 items={[
                     {label: 'Home', href: '/'},
                     {label: 'Stickers', href: '/stickers'},
                     {label: formatSlug(slug)}
                 ]}
             />
-            <div className="flex flex-col lg:flex-row my-8 gap-8 lg:gap-0">
+            <div className="flex flex-col lg:flex-row my-8 gap-8 lg:gap-0 px-4 md:px-8 lg:px-[100px]">
                 <div className="sticker-detail-left flex justify-center lg:justify-start mx-auto relative">
                     <Image
                         className="sticker-detail-img max-w-full h-auto sm:max-w-[280px] md:max-w-[340px] lg:max-w-none"
