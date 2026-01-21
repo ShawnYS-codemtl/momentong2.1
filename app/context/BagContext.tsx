@@ -77,8 +77,10 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
 
   const clearBag = () => {
     setItems([])
+    localStorage.removeItem("cart")
+    localStorage.removeItem("subtotal")
   }
-
+  
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0

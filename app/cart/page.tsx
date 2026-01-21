@@ -1,6 +1,7 @@
 "use client"
 
 import Breadcrumb from "../components/Breadcrumb"
+import CheckoutButton from "../components/CheckoutButton"
 import QuantitySelector from "../components/QuantitySelector"
 import { useBag } from "../context/BagContext"
 import Image from "next/image"
@@ -10,7 +11,7 @@ export default function CartPage(){
     const { items, updateQuantity, removeItem, subtotal } = useBag()
 
     return (
-        <main className="px-4 md:px-8 lg:px-16 mb-8">
+        <main>
             <div className="mb-8">
                 <Breadcrumb
                     items={[
@@ -20,7 +21,7 @@ export default function CartPage(){
                 />
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-12">
+            <div className="flex flex-col lg:flex-row gap-12 px-4 md:px-8 lg:px-16 mb-8">
                 {/* Products Section */}
                 <div className="lg:w-3/5">
                     {items.length === 0 ? (
@@ -104,10 +105,10 @@ export default function CartPage(){
                         Stickers ship via untracked letter mail to keep costs low.
                         </p>
                         <p className="text-sm text-gray-600 mb-6">Estimated delivery: 5–10 business days.</p>
-
-                        <button className="w-full bg-[var(--primary)] text-white py-3 rounded-lg font-semibold mb-3 hover:opacity-90">
+                        <CheckoutButton/>
+                        {/* <button className="w-full bg-[var(--primary)] text-white py-3 rounded-lg font-semibold mb-3 hover:opacity-90">
                         Checkout
-                        </button>
+                        </button> */}
                         <Link href="/stickers" className="w-full block text-center border border-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-100">
                         Continue Shopping
                         </Link>
