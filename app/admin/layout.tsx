@@ -30,7 +30,7 @@ export default async function AdminLayout({
 
   // 3️⃣ Render admin UI
   return (
-    <div className="min-h-screen flex">
+    <div className="flex">
       <aside className="w-64 border-r p-6">
         <h2 className="font-semibold mb-6">Admin</h2>
 
