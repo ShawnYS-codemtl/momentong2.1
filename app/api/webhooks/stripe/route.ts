@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { supabaseServer } from "@/lib/supabase/supabaseServer"
 import Stripe from "stripe"
+import { sendOrderEmails } from "@/lib/email/sendOrderEmails"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
       const lineItems = checkoutSession.line_items?.data || []
 
       // Save order in your database
-      const { error } = await supabaseServer.from("orders").insert({
+      const { data: order, error } = await supabaseServer.from("orders").insert({
         stripe_session_id: session.id,
         customer_email: session.customer_details?.email,
         customer_name: session.customer_details?.name,
@@ -48,14 +49,29 @@ export async function POST(req: NextRequest) {
         amount_total: session.amount_total,
         shipping_address: session.customer_details?.address,
         status: "paid"
-      });
+      })
+      .select()
+      .single()
 
-      if (error) {
+      if (error || !order) {
         console.error("Failed to save order:", error)
         return new NextResponse("Database error", { status: 500 })
       }
 
-      console.log("✅ Order saved successfully:", checkoutSession.id)
+      console.log("✅ Order saved successfully:", order.id)
+
+      // Send emails after successful insert
+      if (order.status === "paid") {
+        await sendOrderEmails({
+          id: order.id,
+          customer_email: order.customer_email,
+          customer_name: order.customer_name,
+          items: order.items,
+          amount_total: order.amount_total,
+          shipping_address: order.shipping_address,
+        })
+      }
+      
     } catch (err) {
       console.error("Error fulfilling order:", err)
       return new NextResponse("Fulfillment error", { status: 500 })
