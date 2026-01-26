@@ -16,8 +16,8 @@ export type CollectionCardProps = {
             md:w-[390px]
           "'>
           <div className="location-container">
-              <h3>Location</h3>
-              <h2>{location}</h2>
+              <span className="text-[40px] font-medium">{location}</span>
+              {/* <h2>Collection</h2> */}
           </div>
           <div className="theme-container">
               <h3>Moments of</h3>
