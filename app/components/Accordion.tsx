@@ -22,7 +22,7 @@ export default function Accordion({title, children}: AccordionProps) {
           </button>
     
           {open && (
-            <div className="pb-5">
+            <div className="pb-5 overflow-hidden">
               {children}
             </div>
           )}

@@ -15,8 +15,6 @@ export default async function StickerDetailPage({params} : Params){
     const sticker = await getStickerBySlug(slug)
     const stickerImageUrl = getStickerUrl(sticker.image_path) 
 
-    let selectedQuantity = 1
-
     return (
         <main>
             <Breadcrumb
@@ -37,7 +35,7 @@ export default async function StickerDetailPage({params} : Params){
                         >
                     </Image>
                 </div>
-                <div className="sticker-detail-info px-0 lg:px-8">
+                <div className="sticker-detail-info px-0 lg:px-8 min-w-0">
                     <h2 className="mb-3">{sticker.title.toUpperCase()}</h2>
                     <h3 className="mb-4">$ {(sticker.price/100).toFixed(2)} CAD</h3>
                     <hr />
@@ -49,7 +47,7 @@ export default async function StickerDetailPage({params} : Params){
                     <StickerPurchase sticker={{ ...sticker, image_path: stickerImageUrl }}/>
                     <hr />
                     <Accordion title="Description">
-                        <p>{sticker.description}</p>
+                        <p className="max-w-prose break-words whitespace-pre-wrap">{sticker.description}</p>
                     </Accordion>
                     <hr />
                     <Accordion title="Additional Information">
