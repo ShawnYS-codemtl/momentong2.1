@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
           lineItems.map(item => ({
             name: item.description,
             quantity: item.quantity,
-            price: item.price?.unit_amount
+            price: item.price?.unit_amount,
+            sticker_id: item.metadata?.sticker_id
           })
         ),
         amount_total: session.amount_total,
@@ -59,6 +60,32 @@ export async function POST(req: NextRequest) {
       }
 
       console.log("✅ Order saved successfully:", order.id)
+
+      // update stock
+      for (const item of order.items) {
+        // Use the item name to find the sticker, or ideally store the sticker ID in your items
+        const { data: sticker, error: fetchError } = await supabaseServer
+          .from("stickers")
+          .select("stock")
+          .eq("sid", item.sticker_id)
+          .single()
+        
+        if (fetchError || !sticker) {
+          console.error(`Failed to fetch stock for ${item.name}`, fetchError)
+          continue
+        }
+        
+        const newStock = Math.max(0, sticker.stock - item.quantity) // prevent negative
+        
+        const { error: stockError } = await supabaseServer
+          .from("stickers")
+          .update({ stock: newStock })
+          .eq("sid", item.sticker_id)
+        
+        if (stockError) {
+          console.error(`Failed to update stock for ${item.name}:`, stockError)
+        }
+      }
 
       // Send emails after successful insert
       if (order.status === "paid") {

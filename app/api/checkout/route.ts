@@ -10,12 +10,16 @@ type CartItem = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-  const { items } = await req.json(); // [{ id, quantity }]
+  const { items } = await req.json(); // [{ id, quantity, stock, is_available }]
 
   // Compute subtotal safely on server
   const line_items = await Promise.all(
     items.map(async (item: CartItem) => {
       const sticker = await getStickerById(item.id)
+
+      if (!sticker.is_available || sticker.stock < item.quantity) {
+        throw new Error(`Item "${sticker.title}" is unavailable or does not have enough stock.`)
+      }
   
       return {
         price_data: {
@@ -24,6 +28,7 @@ export async function POST(req: Request) {
           unit_amount: sticker.price, // from server
         },
         quantity: item.quantity,
+        metadata: { sticker_id: sticker.sid }
       }
     })
   )
