@@ -9,6 +9,8 @@ interface StickerWithCollection {
     image_path: string
     collection_id: string
     stickers_collection_fk: {location: string}
+    stock: number
+    is_available: boolean
 }
 
 export async function GET(req: NextRequest) {
@@ -38,7 +40,9 @@ export async function GET(req: NextRequest) {
         price,
         image_path,
         collection_id,
-        stickers_collection_fk!inner(location)
+        stickers_collection_fk!inner(location),
+        stock,
+        is_available
         `)
         .order("created_at", { ascending: false })
         .overrideTypes<StickerWithCollection[]>()
@@ -52,7 +56,9 @@ export async function GET(req: NextRequest) {
         price: sticker.price,
         image_path: getStickerUrl(sticker.image_path),
         collection_id: sticker.collection_id,
-        collection_name: sticker.stickers_collection_fk.location
+        collection_name: sticker.stickers_collection_fk.location,
+        stock: sticker.stock,
+        is_available: sticker.is_available
     }))
 
     return NextResponse.json(formatted)

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import type { Sticker } from "@/types/sticker"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export default function AdminStickersPage() {
   const [stickers, setStickers] = useState<Sticker[]>([])
@@ -48,12 +49,12 @@ export default function AdminStickersPage() {
         <div className="p-8">
             <div className="mb-6 flex items-center justify-between">
                 <h1 className="text-2xl font-semibold">Stickers</h1>
-                <a
+                <Link
                 href="/admin/stickers/new"
                 className="inline-block bg-black text-white px-4 py-2 hover:bg-gray-800 transition-colors"
                 >
                 Add Sticker
-                </a>
+                </Link>
             </div>
             
             <div className="overflow-x-auto border rounded-lg">
@@ -64,6 +65,8 @@ export default function AdminStickersPage() {
                     <th className="py-3 px-4 text-left font-medium text-gray-700">Title</th>
                     <th className="py-3 px-4 text-left font-medium text-gray-700">Collection</th>
                     <th className="py-3 px-4 text-left font-medium text-gray-700">Price</th>
+                    <th className="py-3 px-4 text-left font-medium text-gray-700">Stock</th>
+                    <th className="py-3 px-4 text-left font-medium text-gray-700">Available</th>
                     <th className="py-3 px-4 text-left font-medium text-gray-700">Actions</th>
                     </tr>
                 </thead>
@@ -82,6 +85,8 @@ export default function AdminStickersPage() {
                         <td className="py-4 px-4 font-medium">{sticker.title}</td>
                         <td className="py-4 px-4 text-gray-600">{sticker.collection_name}</td>
                         <td className="py-4 px-4 text-gray-900">${(sticker.price / 100).toFixed(2)}</td>
+                        <td className="py-4 px-4 text-gray-900">{sticker.stock}</td>
+                        <td className="py-4 px-4 text-gray-900">{sticker.is_available ? 'Yes' : 'No'}</td>
                         <td className="py-4 px-4">
                         <button
                             onClick={() => handleDelete(sticker.sid)}
@@ -89,6 +94,12 @@ export default function AdminStickersPage() {
                         >
                             Delete
                         </button>
+                        <Link
+                          href={`/admin/stickers/${sticker.sid}/edit`}
+                          className="bg-blue-600 text-white px-4 py-[10px] rounded hover:bg-blue-700 transition-colors ml-1"
+                        >
+                          Edit
+                        </Link>
                         </td>
                     </tr>
                     ))}
