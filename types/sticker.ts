@@ -11,5 +11,7 @@ export type Sticker = {
     description: string
     collection_name?: string    // optional if you store it, otherwise can omit
     slug: string
+    stock: number
+    is_available: boolean
   }
   

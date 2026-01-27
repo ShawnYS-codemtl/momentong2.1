@@ -3,10 +3,17 @@
 type Props = {
   onChange: (quantity: number) => void
   quantity: number
+  max: number
 }
 
-export default function QuantitySelector({ onChange, quantity }: Props) {
-  const increase = () => onChange(quantity + 1)
+export default function QuantitySelector({ onChange, quantity, max }: Props) {
+
+  const increase = () => {
+    if (quantity < max) {
+      onChange(quantity + 1)
+    }
+  }
+
   const decrease = () => onChange(Math.max(1, quantity - 1))
 
   return (
@@ -21,7 +28,7 @@ export default function QuantitySelector({ onChange, quantity }: Props) {
         ">
       <button className="cursor-pointer" onClick={decrease}>-</button>
       <span className="px-6">{quantity}</span>
-      <button className="cursor-pointer" onClick={increase}>+</button>
+      <button className="cursor-pointer" onClick={increase} disabled={quantity > max}>+</button>
     </div>
   )
 }

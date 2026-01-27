@@ -8,6 +8,8 @@ export type BagItem = {
   price: number // cents
   image: string
   quantity: number
+  stock: number
+  is_available: boolean
 }
 
 type BagContextType = {
@@ -38,22 +40,30 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
   }, [items])
 
   const addItem = (item: Omit<BagItem, 'quantity'>, amount: number = 1) => {
-    setItems((prev) => {
-        const existingIndex = prev.findIndex(i => i.productId === item.productId)
-    
-        if (existingIndex !== -1) {
-          // If item exists, increase quantity
-          const updated = [...prev]
-          updated[existingIndex] = {
-            ...updated[existingIndex],
-            quantity: updated[existingIndex].quantity + amount
-          }
-          return updated
-        } else {
-          // If new item, set quantity
-          return [...prev, { ...item, quantity: amount }]
+    // HARD BLOCK: unavailable
+    if (!item.is_available) return
+
+    setItems(prev => {
+      const existing = prev.find(i => i.productId === item.productId)
+  
+      // HARD BLOCK: sold out
+      if (!existing && item.stock <= 0) return prev
+  
+      if (existing) {
+        // HARD BLOCK: exceed stock
+        if (existing.quantity + amount > existing.stock) {
+          return prev
         }
-      })
+  
+        return prev.map(i =>
+          i.productId === item.productId
+            ? { ...i, quantity: i.quantity + amount }
+            : i
+        )
+      }
+  
+      return [...prev, { ...item, quantity: amount }]
+    })
   }
 
   const removeItem = (productId: string) => {
@@ -67,11 +77,12 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
     }
 
     setItems(prev =>
-      prev.map(item =>
-        item.productId === productId
-          ? { ...item, quantity }
-          : item
-      )
+      prev.flatMap(item => {
+        if (item.productId !== productId) return [item]
+        if (quantity <= 0) return []
+        if (quantity > item.stock) return [item]
+        return [{ ...item, quantity }]
+      })
     )
   }
 
