@@ -1,5 +1,6 @@
 // app/collections/[slug]/page.tsx
 import { getStickersByCollectionSlug } from '@/lib/data/stickers'
+import { getCollectionBySlug } from '@/lib/data/collections'
 import StickerGrid from '@/app/components/StickerGrid'
 import { formatSlug } from '@/lib/utils/formatSlug'
 import Breadcrumb from '@/app/components/Breadcrumb'
@@ -10,6 +11,8 @@ interface Params {
 
 export default async function CollectionPage({ params }: Params) {
   const { slug } = await params
+  const collection = await getCollectionBySlug(slug)
+  if (!collection) return <p>Collection not found.</p>
   const stickers = await getStickersByCollectionSlug(slug)
 
   if (!stickers || stickers.length === 0) {
@@ -24,6 +27,14 @@ export default async function CollectionPage({ params }: Params) {
           {label: formatSlug(slug)}
         ]}
         />
+
+        {/* Collection Description */}
+        <div className="my-6 px-4 sm:px-6 md:px-8">
+          <p className="text-gray-700 text-center mx-auto max-w-xl">
+            {collection.description}
+          </p>
+        </div>
+
       <StickerGrid stickers={stickers} />
     </main>
   )

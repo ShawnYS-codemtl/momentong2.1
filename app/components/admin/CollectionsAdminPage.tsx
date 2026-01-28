@@ -73,12 +73,12 @@ export default function CollectionsAdminPage({ collections }: Props) {
                 </div>
 
                 {/* Description */}
-                <div className="text-gray-700">
+                <div className="text-gray-700 line-clamp-3">
                     {collection.description}
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-center gap-2">
+                <div className="flex gap-2">
                 <Link
                     href={`/admin/collections/${collection.cid}/edit`}
                     className="

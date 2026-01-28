@@ -7,7 +7,7 @@ export type CollectionCardProps = {
   export default function CollectionCard({
     collection
   }: CollectionCardProps) {
-    const { id, slug, location, theme, description, favoriteLabel, stickerCount } = collection
+    const { cid, slug, location, theme, description, favorite_label, stickerCount } = collection
     return (
       <Link href={`/collections/${slug}`} className="block">
         <div className='collection-card-container "
@@ -29,7 +29,7 @@ export type CollectionCardProps = {
               </div>
               <div className="favourite-container">
                   <h4>Favourite</h4>
-                  <h3 className="favouriteLabel">{favoriteLabel}</h3>
+                  <h3 className="favouriteLabel">{favorite_label}</h3>
               </div>
           </div>
         </div>

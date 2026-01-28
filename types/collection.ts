@@ -1,11 +1,11 @@
 // types/collection.ts
 export type CollectionSummary = {
-    id: string
+    cid: string
     slug: string
     location: string
     theme: string
     description?: string
-    favoriteLabel?: string
+    favorite_label?: string
     stickerCount: number
   }
   
