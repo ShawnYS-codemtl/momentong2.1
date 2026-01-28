@@ -16,12 +16,11 @@ export type CollectionCardProps = {
             md:w-[390px]
           "'>
           <div className="location-container">
-              <span className="text-[40px] font-medium">{location}</span>
-              {/* <h2>Collection</h2> */}
+              <span className="text-[34px] md:text-[40px] font-medium ">{location}</span>
           </div>
           <div className="theme-container">
-              <h3>Moments of</h3>
-              <h2>{theme}</h2>
+              <h3 className="text-sm sm:text-base">Moments of</h3>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">{theme}</h2>
           </div>
           <div className="flex-container">
               <div className="sticker-container">

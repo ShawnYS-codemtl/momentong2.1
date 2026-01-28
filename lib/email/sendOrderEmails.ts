@@ -10,10 +10,11 @@ export async function sendOrderEmails(order: {
   amount_total: number
   shipping_address: any
 }) {
+  const fromEmail = process.env.RESEND_FROM_EMAIL!
   // Customer email
   if (order.customer_email) {
     await resend.emails.send({
-      from: "Momento <orders@momento.ng>",
+      from: `Momento.ng <${fromEmail}>`,
       to: order.customer_email,
       subject: "Your order has been received",
       html: `
@@ -27,8 +28,8 @@ export async function sendOrderEmails(order: {
 
   // Admin email
   await resend.emails.send({
-    from: "Momento <orders@momento.ng>",
-    to: "momentongbusiness@gmail.com",
+    from: `Momento.ng <${fromEmail}>`,
+    to: fromEmail,
     subject: `New order ${order.id}`,
     html: `
       <h2>New Order</h2>
