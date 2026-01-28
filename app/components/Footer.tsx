@@ -74,7 +74,7 @@ export default function Footer() {
                 <h3 className="font-semibold mb-2">Legal</h3>
                 <ul className="space-y-1 text-gray-400 text-sm">
                     <li>
-                    <Link href="/privacy" target='_blank' className="hover:underline hover:decoration-[var(--primary-color)] underline-offset-4">
+                    <Link href="/privacy" className="hover:underline hover:decoration-[var(--primary-color)] underline-offset-4">
                         Privacy Policy
                     </Link>
                     </li>
