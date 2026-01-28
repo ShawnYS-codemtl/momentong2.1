@@ -1,11 +1,15 @@
 // app/admin/orders/page.tsx
 import { createClient } from "@/lib/supabase/server"
 
-interface Props {
-  searchParams?: { search?: string }
+function getNextSortOrder(currentSortBy: string, currentSortOrder: string, column: string) {
+  if (currentSortBy === column) {
+    return currentSortOrder === "asc" ? "desc" : "asc"
+  }
+  return "asc"
 }
 
-export default async function AdminOrdersPage({ searchParams }: Props) {
+export default async function AdminOrdersPage({ searchParams: rawSearchParams }: { searchParams: Promise<{ [key: string]: string }> }) {
+  const searchParams = await rawSearchParams
   const supabase = await createClient()
 
   // Authenticate user
@@ -32,15 +36,15 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
         created_at,
         customer_name
     `)
-    .order("created_at", { ascending: false })
 
-//   if (searchParams?.search) {
-//     query = query.ilike("customer_name", `%${searchParams.search}%`)
-//   }
+    // Sorting
+    const allowedSortColumns = ["id", "created_at", "customer_name", "customer_email", "amount_total", "status"]
+    const sortBy = allowedSortColumns.includes(searchParams?.sortBy || "") ? searchParams.sortBy! : "created_at"
+    const sortOrder = searchParams?.sortOrder === "asc" ? "asc" : "desc"
+    query = query.order(sortBy, { ascending: sortOrder === "asc" })
 
-  const { data: orders, error } = await query
-  if (error) throw new Error(error.message)
-  console.log("orders", orders, error)
+    const { data: orders, error } = await query
+    if (error) throw new Error(error.message)
 
   return (
     <div className="p-8">
@@ -49,14 +53,38 @@ export default async function AdminOrdersPage({ searchParams }: Props) {
             <table className="w-full table-fixed border-collapse border border-gray-200">
                 <thead>
                 <tr className="border-b bg-gray-50">
-                    <th className="w-24 text-left py-2 px-2 truncate">Id</th>
-                    <th className="w-48 text-left py-2 px-2 truncate">Date</th>
-                    <th className="w-48 text-left py-2 px-2 truncate">Name</th>
-                    <th className="w-48 text-left py-2 px-2 truncate">Email</th>
-                    <th className="w-24 text-left py-2 px-2 truncate">Total</th>
-                    <th className="w-32 text-left py-2 px-2 truncate">Status</th>
-                    <th className="w-32 text-left py-2 px-2 truncate">Session</th>
-                    <th className="w-24 text-left py-2 px-2">Action</th>
+                  <th className="w-24 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=id&sortOrder=${getNextSortOrder(sortBy, sortOrder, "id")}`}>
+                      Id {sortBy === "id" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-48 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=created_at&sortOrder=${getNextSortOrder(sortBy, sortOrder, "created_at")}`}>
+                      Date {sortBy === "created_at" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-48 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=customer_name&sortOrder=${getNextSortOrder(sortBy, sortOrder, "customer_name")}`}>
+                      Name {sortBy === "customer_name" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-48 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=customer_email&sortOrder=${getNextSortOrder(sortBy, sortOrder, "customer_email")}`}>
+                      Email {sortBy === "customer_email" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-24 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=amount_total&sortOrder=${getNextSortOrder(sortBy, sortOrder, "amount_total")}`}>
+                      Total {sortBy === "amount_total" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-32 text-left py-2 px-2 truncate">
+                    <a href={`?sortBy=status&sortOrder=${getNextSortOrder(sortBy, sortOrder, "status")}`}>
+                      Status {sortBy === "status" ? (sortOrder === "asc" ? "↑" : "↓") : ""}
+                    </a>
+                  </th>
+                  <th className="w-32 text-left py-2 px-2 truncate">Session</th>
+                  <th className="w-24 text-left py-2 px-2">Action</th>
                 </tr>
                 </thead>
                 <tbody>
