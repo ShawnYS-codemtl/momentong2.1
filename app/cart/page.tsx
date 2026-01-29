@@ -63,6 +63,7 @@ export default function CartPage(){
                                             <QuantitySelector
                                                 quantity={item.quantity}
                                                 onChange={(qty) => updateQuantity(item.productId, qty)}
+                                                max={item.stock}
                                             />
                                             <button
                                                 onClick={() => removeItem(item.productId)}
