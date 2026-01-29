@@ -1,4 +1,7 @@
 // app/about/page.tsx
+import { getPublicStorageUrl } from "@/lib/data/images";
+import Image from "next/image"
+
 export default function AboutPage() {
     const timelineSteps = [
       {
@@ -28,10 +31,12 @@ export default function AboutPage() {
         <section className="w-full py-24 bg-indigo-50">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
             <div className="flex-shrink-0 w-full md:w-1/2">
-              <img 
-                src="/images/about-me.jpg" 
+              <Image 
+                src={getPublicStorageUrl("about-assets", "hero/jade.jpeg")}
                 alt="About me" 
                 className="w-full h-auto rounded-lg shadow-lg"
+                width={600}
+                height={300}
               />
             </div>
             <div className="w-full md:w-1/2 text-center md:text-left">
