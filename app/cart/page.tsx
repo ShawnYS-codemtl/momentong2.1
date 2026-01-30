@@ -10,6 +10,25 @@ import Link from "next/link"
 export default function CartPage(){
     const { items, updateQuantity, removeItem, subtotal } = useBag()
 
+    {/* Calculate discount */}
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+
+    let discount = 0;
+    if (totalQuantity >= 5) {
+        // Expand items by quantity to handle any combination
+        const expandedPrices = items.flatMap(item =>
+        Array(item.quantity).fill(item.price)
+        );
+
+        // Sort ascending to apply discount to cheapest 5 stickers
+        expandedPrices.sort((a, b) => a - b);
+
+        const firstFiveTotal = expandedPrices.slice(0, 5).reduce((sum, price) => sum + price, 0);
+        discount = firstFiveTotal - 2000; // $20 for first 5 stickers
+    }
+
+    const totalAfterDiscount = subtotal - discount;
+
     return (
         <main>
             <div className="mb-8">
@@ -97,19 +116,30 @@ export default function CartPage(){
 
                         <hr className="my-4" />
 
-                        <div className="flex justify-between font-semibold text-lg mb-4">
+                        <div className="flex flex-col gap-2 mb-4">
+                            {discount > 0 && (
+                                <div className="flex justify-between text-green-600 font-semibold">
+                                <span>Bundle Discount (5-for-$20)</span>
+                                <span>- ${ (discount / 100).toFixed(2) }</span>
+                                </div>
+                            )}
+
+                            <div className="flex justify-between font-semibold text-lg">
+                                <span>Subtotal:</span>
+                                <span>${(totalAfterDiscount / 100).toFixed(2)} CAD</span>
+                            </div>
+                        </div>
+                                    
+                        {/* <div className="flex justify-between font-semibold text-lg mb-4">
                         <span>Subtotal:</span>
                         <span>${(subtotal / 100).toFixed(2)} CAD</span>
-                        </div>
+                        </div> */}
 
                         <p className="text-sm text-gray-600 mb-2">
                         Stickers ship via untracked letter mail to keep costs low.
                         </p>
                         <p className="text-sm text-gray-600 mb-6">Estimated delivery: 5–10 business days.</p>
                         <CheckoutButton/>
-                        {/* <button className="w-full bg-[var(--primary)] text-white py-3 rounded-lg font-semibold mb-3 hover:opacity-90">
-                        Checkout
-                        </button> */}
                         <Link href="/stickers" className="w-full block text-center border border-gray-300 py-3 rounded-lg font-semibold hover:bg-gray-100">
                         Continue Shopping
                         </Link>
@@ -117,5 +147,5 @@ export default function CartPage(){
                 </div>
             </div>
         </main>
-      )
+    )
 }
