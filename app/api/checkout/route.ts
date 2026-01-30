@@ -10,7 +10,7 @@ type CartItem = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
-  const { items } = await req.json(); // [{ id, quantity, stock, is_available }]
+    const { items } = await req.json(); // [{ id, quantity, stock, is_available }]
 
     // Fetch stickers and validate stock
     const stickersData = await Promise.all(
@@ -22,6 +22,20 @@ export async function POST(req: Request) {
         return { ...sticker, quantity: item.quantity };
       })
     );
+
+    const expandedStickers = stickersData.flatMap(s =>
+      Array.from({ length: s.quantity }, () => s.sid)
+    )
+    
+    const bundleStickerIds = expandedStickers.slice(0, 5)
+    
+    // Convert back to {id, quantity}
+    const bundleBreakdown = Object.entries(
+      bundleStickerIds.reduce<Record<string, number>>((acc, id) => {
+        acc[id] = (acc[id] ?? 0) + 1
+        return acc
+      }, {})
+    ).map(([id, quantity]) => ({ id, quantity }))
   
     // Total quantity of stickers in the cart
     const totalQuantity = stickersData.reduce((sum, s) => sum + s.quantity, 0);
@@ -39,11 +53,7 @@ export async function POST(req: Request) {
         quantity: 1,
         metadata: {
           deal_applied: "true",
-          stickers_in_bundle: JSON.stringify(
-            stickersData
-              .map(s => ({ id: s.sid, quantity: s.quantity }))
-              .slice(0, 5)
-          ),
+          stickers_in_bundle: JSON.stringify(bundleBreakdown)
         },
       });
   
