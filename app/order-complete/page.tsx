@@ -10,7 +10,7 @@ export default function SuccessPage() {
     useEffect(() => {
       // Only clear cart after successful payment
       clearBag();
-    }, []);
+    }, [clearBag]);
 
     return (
       <main className="px-8 py-24 text-center">

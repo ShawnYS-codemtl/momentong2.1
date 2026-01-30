@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 export type BagItem = {
   productId: string
@@ -25,14 +25,16 @@ const BagContext = createContext<BagContextType | null>(null)
 
 export function BagProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<BagItem[]>([])
+  const [skipRehydrate, setSkipRehydrate] = useState(false)
 
   // Load bag from localStorage on first mount
   useEffect(() => {
+    if (skipRehydrate) return
     const stored = localStorage.getItem('bag')
     if (stored) {
       setItems(JSON.parse(stored))
     }
-  }, [])
+  }, [skipRehydrate])
 
   // Persist bag to localStorage
   useEffect(() => {
@@ -86,16 +88,14 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
     )
   }
 
-  const clearBag = () => {
-    setItems([])
-    localStorage.removeItem("cart")
-    localStorage.removeItem("subtotal")
-  }
+  const clearBag = useCallback(() => {
+    setItems([]);
+    setSkipRehydrate(true) // prevent rehydrating old items
+    localStorage.removeItem("bag");
+    localStorage.removeItem("subtotal");
+  }, []);
   
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  )
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
   return (
     <BagContext.Provider
