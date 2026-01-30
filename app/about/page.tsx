@@ -25,12 +25,12 @@ export default function AboutPage() {
     ];
   
     return (
-      <main className="mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10 lg:px-12 xl:px-[50px]">
+      <main className="w-screen relative left-1/2 right-1/2 -translate-x-1/2 bg-[var(--primary)] py-20">
   
         {/* Hero Section */}
         <section className="w-full py-24 bg-indigo-50">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-shrink-0 w-full md:w-1/2">
+            <div className="flex-shrink-0 w-full md:w-1/2 px-4 md:pr-0 md:pl-4">
               <Image 
                 src={getPublicStorageUrl("about-assets", "hero/jade.jpeg")}
                 alt="About me" 
