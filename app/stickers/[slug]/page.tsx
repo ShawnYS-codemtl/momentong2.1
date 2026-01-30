@@ -51,10 +51,28 @@ export default async function StickerDetailPage({params} : Params){
                     </Accordion>
                     <hr />
                     <Accordion title="Additional Information">
-                       <p>Size:...</p>
-                       <p>Shipping:...</p>
-                       <p>Care Instructions:</p>
-                       <p> Returns:</p>   
+                        <ul className="space-y-6 max-w-xl mx-auto text-gray-700">
+                            <li>
+                                <p className="mt-1 text-indigo-500">Bundle</p>
+                                <span>Pro tip: pick any 5 stickers for $20 and save some cash!</span>
+                            </li>
+                            <li>
+                                <p className="mt-1 text-indigo-500">Size:</p>
+                                <span>Each sticker varies between 3–5 cm in width and height. Perfect for laptops, bottles, or anywhere you want a little flair!</span>
+                            </li>
+                            <li>
+                                <p className="mt-1 text-indigo-500">Shipping:</p>
+                                <span>Carefully packaged and shipped within 3–7 business days (Canada & US).</span>
+                            </li>
+                            <li>
+                                <p className="mt-1 text-indigo-500">Care Instructions:</p>
+                                <span>Stick on clean, dry surfaces. Avoid prolonged sun or water exposure. Wipe gently if needed.</span>
+                            </li>
+                            <li>
+                                <p className="mt-1 text-indigo-500">Returns:</p>
+                                <span>Stickers are final sale. If your order arrives damaged or incorrect, contact us and we’ll fix it!</span>
+                            </li>
+                        </ul>
                     </Accordion>
                 </div>
 

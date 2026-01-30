@@ -34,7 +34,7 @@ export default function CheckoutButton() {
       const data = await res.json();
       const clientSecret = data.clientSecret
 
-      clearBag()
+      // clearBag()
 
       router.push(`/checkout?cs=${clientSecret}`)
 
