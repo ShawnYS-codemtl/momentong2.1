@@ -3,8 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import UserIcon from '@/public/user-icon.svg'
-import HeartIcon from '@/public/Heart.svg'
 import BagIcon from '@/public/bag-icon.svg'
 import { useBag } from '../context/BagContext'
 
@@ -130,13 +128,10 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
                 hover:border-[#E6B12A]
                 transition-colors"
                 onClick={onClose}>Contact</Link>
+          <Link href='/cart' className='navbar-icon' onClick={onClose}>
+              <Image src={BagIcon} alt="Bag" width={24} height={24} className="navbar-icon" />
+          </Link>
         </nav>
-
-        <div className="mt-auto flex gap-6">
-          <Image src={UserIcon} alt="User" width={24} height={24} className="navbar-icon"/>
-          <Image src={HeartIcon} alt="Wishlist" width={24} height={24} className="navbar-icon"/>
-          <Image src={BagIcon} alt="Bag" width={24} height={24} className="navbar-icon" />
-        </div>
       </div>
     </div>
   )
