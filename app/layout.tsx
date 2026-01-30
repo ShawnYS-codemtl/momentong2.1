@@ -19,6 +19,20 @@ const dancingScript = Dancing_Script({
   display: "swap",
 });
 
+export const metadata = {
+  title: 'momento.ng',
+  description: 'Handmade stickers inspired by everyday life',
+  icons: {
+    icon: '/favicon.svg',               // primary SVG
+    shortcut: '/favicon-32x32.png',    // fallback for browsers
+    apple: '/apple-touch-icon.png',    // iOS home screen
+    other: [
+      { rel: 'icon', url: '/favicon-16x16.png', sizes: '16x16' },
+      { rel: 'icon', url: '/android-chrome-192x192.png', sizes: '192x192' },
+    ],
+  },
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{

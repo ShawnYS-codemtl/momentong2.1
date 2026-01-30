@@ -14,7 +14,7 @@ export default function AboutPage() {
         year: '2020',
         title: 'Learning & Growing',
         text: 'Designing stickers taught me patience, attention to detail, and how to create designs people truly connect with.',
-        image: '/mcgill 1.svg',
+        image: '/hkpost_stamp_day 1.svg',
       },
       {
         year: '2022',
