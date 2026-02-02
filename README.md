@@ -163,6 +163,7 @@ The most challenging part was implementing payments end-to-end: syncing sticker 
 
 ## Future Improvememts
 
+- test on different OS
 - update all descriptions
 - add optional note by customer before checkout
 - Convert css files to tailwind styling
