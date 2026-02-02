@@ -1,5 +1,7 @@
 # Momento.ng - Sticker E-Commerce Platform
 
+https://momentong.vercel.app/ 
+
 ## Project Overview
 A friend of mine runs a small sticker business that she currently promotes through Instagram. Orders are collected via a Google Form, and fulfillment requires coordinating in-person meetups with customers. This limits sales primarily to local markets or nearby buyers and makes scaling difficult.
 
