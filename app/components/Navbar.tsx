@@ -60,13 +60,6 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* Desktop icons
-        <div className="hidden md:flex items-center gap-5 ml-4">
-          <Image src={UserIcon} alt="User" width={32} height={32} className="navbar-icon" />
-          <Image src={HeartIcon} alt="Wishlist" width={32} height={32} className="navbar-icon" />
-          <Image src={BagIcon} alt="Bag" width={32} height={32} className="navbar-icon" />
-        </div> */}
-
         {/* Mobile burger */}
         <button
           onClick={() => setOpen(true)}
@@ -77,6 +70,16 @@ export default function Navbar() {
           <span className="w-6 h-0.5 bg-white" />
           <span className="w-6 h-0.5 bg-white" />
         </button>
+
+        <Link href='/cart' className='md:hidden relative inline-block ml-auto'>
+          <Image src={BagIcon} alt="Bag" height={32} width={32} className="navbar-icon mb-2" />
+          <span className="
+            absolute -top-0 -right-2
+            bg-red-500 text-white text-xs font-bold
+            rounded-full px-1.5 py-0.5
+            ">{count}
+          </span>
+        </Link>
       </nav>
 
       {open && <MobileMenu onClose={() => setOpen(false)} />}
