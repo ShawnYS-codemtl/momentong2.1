@@ -1,5 +1,6 @@
 // app/admin/orders/page.tsx
 import { createClient } from "@/lib/supabase/server"
+import DeleteOrderButton from "@/app/components/admin/DeleteOrderButton"
 
 function getNextSortOrder(currentSortBy: string, currentSortOrder: string, column: string) {
   if (currentSortBy === column) {
@@ -84,7 +85,7 @@ export default async function AdminOrdersPage({ searchParams: rawSearchParams }:
                     </a>
                   </th>
                   <th className="w-32 text-left py-2 px-2 truncate">Session</th>
-                  <th className="w-24 text-left py-2 px-2">Action</th>
+                  <th className="w-44 text-left py-2 px-2">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -98,12 +99,15 @@ export default async function AdminOrdersPage({ searchParams: rawSearchParams }:
                     <td className="py-2 px-2 break-words">{order.status}</td>
                     <td className="py-2 px-2 truncate" title={order.stripe_session_id}>{order.stripe_session_id}</td>
                     <td className="py-2 px-2">
-                        <a
-                        href={`/admin/orders/${order.id}`}
-                        className="text-blue-600 hover:underline"
-                        >
-                        Edit
-                        </a>
+                        <div className="flex items-center gap-2">
+                            <a
+                            href={`/admin/orders/${order.id}`}
+                            className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
+                            >
+                            Edit
+                            </a>
+                            <DeleteOrderButton orderId={order.id} />
+                        </div>
                     </td>
                                     </tr>
                 ))}

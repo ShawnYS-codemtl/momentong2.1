@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import type { OrderDetail } from "@/types/order-detail"
 import { createClient } from "@/lib/supabase/server"
+import DeleteOrderButton from "@/app/components/admin/DeleteOrderButton"
 
 export default async function OrderDetailPage({
   params,
@@ -159,6 +160,12 @@ export default async function OrderDetailPage({
                   Update
                 </button>
               </form>
+            </section>
+
+            {/* Delete order */}
+            <section className="border border-red-200 rounded-lg p-6">
+              <h2 className="font-semibold mb-4 text-red-700">Danger Zone</h2>
+              <DeleteOrderButton orderId={order.id} />
             </section>
           </div>
         </div>
