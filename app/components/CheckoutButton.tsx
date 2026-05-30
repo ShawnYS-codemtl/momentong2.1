@@ -34,9 +34,9 @@ export default function CheckoutButton() {
       const data = await res.json();
       const clientSecret = data.clientSecret
 
-      // clearBag()
-
-      router.push(`/checkout?cs=${clientSecret}`)
+      // Keep the client secret out of the URL (browser history / server logs)
+      sessionStorage.setItem("stripe_cs", clientSecret)
+      router.push("/checkout")
 
     } catch (err) {
       setError("Something went wrong. Please try again.");

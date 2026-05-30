@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { loadStripe } from "@stripe/stripe-js"
 import {
   EmbeddedCheckoutProvider,
@@ -14,13 +13,17 @@ const stripePromise = loadStripe(
 )
 
 export default function CheckoutClient() {
-  const searchParams = useSearchParams()
-  const clientSecret = searchParams.get("cs")
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    if (clientSecret) setLoaded(true)
-  }, [clientSecret])
+    const cs = sessionStorage.getItem("stripe_cs")
+    if (cs) {
+      sessionStorage.removeItem("stripe_cs")
+      setClientSecret(cs)
+      setLoaded(true)
+    }
+  }, [])
 
   if (!loaded || !clientSecret) {
     return <p className="text-center mt-24">Loading checkout…</p>
