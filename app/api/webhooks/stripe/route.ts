@@ -7,21 +7,19 @@ import { sendOrderEmails } from "@/lib/email/sendOrderEmails"
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 async function decrementStock(stickerId: string, qty: number) {
-    const { data: sticker, error} = await supabaseServer
-    .from("stickers")
-    .select("stock")
-    .eq("sid", stickerId)
-    .single()
-
-    if (error || !sticker) {
-      console.error(`Failed to fetch sticker stock for ${stickerId}`, error)
-      return
-    }
-
-    await supabaseServer
-      .from("stickers")
-      .update({ stock: Math.max(0, sticker.stock - qty) })
-      .eq("sid", stickerId)
+  // Atomic update via RPC to avoid read-modify-write race conditions.
+  // Requires this function in Supabase:
+  //   CREATE OR REPLACE FUNCTION decrement_stock(p_sticker_id text, p_qty int)
+  //   RETURNS void LANGUAGE sql AS $$
+  //     UPDATE stickers SET stock = GREATEST(0, stock - p_qty) WHERE sid = p_sticker_id;
+  //   $$;
+  const { error } = await supabaseServer.rpc("decrement_stock", {
+    p_sticker_id: stickerId,
+    p_qty: qty,
+  })
+  if (error) {
+    console.error(`Failed to decrement stock for ${stickerId}`, error.code)
+  }
 }
 
 
@@ -38,8 +36,8 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!
     )
   } catch (err: any) {
-    console.error("⚠️ Webhook signature verification failed.", err.message)
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 })
+    console.error("Webhook signature verification failed.", err.message)
+    return new NextResponse("Invalid webhook", { status: 400 })
   }
 
   // Only fulfill checkout sessions
@@ -69,18 +67,26 @@ export async function POST(req: NextRequest) {
         stripe_session_id: session.id,
         customer_email: session.customer_details?.email,
         customer_name: session.customer_details?.name,
-        items: 
-          lineItems.map(item => ({
-            name: item.description ?? "Unknown item",
-            quantity: item.quantity,
-            price: item.price?.unit_amount ?? 0,
-            sticker_id: item.metadata?.sticker_id ?? null,
-            is_bundle: item.metadata?.deal_applied === "true",
-            bundle_stickers: item.metadata?.stickers_in_bundle
-              ? JSON.parse(item.metadata.stickers_in_bundle)
-              : null,
-          })
-        ),
+        items:
+          lineItems.map(item => {
+            let bundle_stickers = null
+            if (item.metadata?.stickers_in_bundle) {
+              try {
+                const parsed = JSON.parse(item.metadata.stickers_in_bundle)
+                if (Array.isArray(parsed)) bundle_stickers = parsed
+              } catch {
+                console.error("Malformed bundle_stickers JSON in Stripe metadata")
+              }
+            }
+            return {
+              name: item.description ?? "Unknown item",
+              quantity: item.quantity,
+              price: item.price?.unit_amount ?? 0,
+              sticker_id: item.metadata?.sticker_id ?? null,
+              is_bundle: item.metadata?.deal_applied === "true",
+              bundle_stickers,
+            }
+          }),
         amount_total: session.amount_total,
         shipping_address: session.customer_details?.address,
         status: "paid"
@@ -115,29 +121,7 @@ export async function POST(req: NextRequest) {
 
         await decrementStock(item.sticker_id, item.quantity)
       }
-        // Use the item name to find the sticker, or ideally store the sticker ID in your items
-        // const { data: sticker, error: fetchError } = await supabaseServer
-        //   .from("stickers")
-        //   .select("stock")
-        //   .eq("sid", item.sticker_id)
-        //   .single()
-        
-        // if (fetchError || !sticker) {
-        //   console.error(`Failed to fetch stock for ${item.name}`, fetchError)
-        //   continue
-        // }
-        
-        // const newStock = Math.max(0, sticker.stock - item.quantity) // prevent negative
-        
-        // const { error: stockError } = await supabaseServer
-        //   .from("stickers")
-        //   .update({ stock: newStock })
-        //   .eq("sid", item.sticker_id)
-        
-        // if (stockError) {
-        //   console.error(`Failed to update stock for ${item.name}:`, stockError)
-        // }
-      
+
 
       // Send emails after successful insert
       if (order.status === "paid") {
