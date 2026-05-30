@@ -1,6 +1,22 @@
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+}
+
+// Strip control characters (including newlines) to prevent email header injection
+function sanitizeHeader(str: string): string {
+  return str.replace(/[\r\n\t]/g, ' ').trim()
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 export async function POST(req: Request) {
   const { name, email, message } = await req.json()
 
@@ -10,6 +26,20 @@ export async function POST(req: Request) {
       { status: 400 }
     )
   }
+
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ message: 'Invalid email address' }, { status: 400 })
+  }
+
+  if (message.length > 5000) {
+    return NextResponse.json({ message: 'Message too long (max 5000 characters)' }, { status: 400 })
+  }
+
+  const safeName = sanitizeHeader(name)
+  const safeEmail = sanitizeHeader(email)
+  const safeMessage = escapeHtml(message)
+  const safeName_html = escapeHtml(safeName)
+  const safeEmail_html = escapeHtml(safeEmail)
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -23,11 +53,11 @@ export async function POST(req: Request) {
 
   try {
     await transporter.sendMail({
-      from: `"${name}" <${email}>`,
+      from: `"${safeName}" <${safeEmail}>`,
       to: process.env.CONTACT_EMAIL,
-      subject: `New contact form message from ${name}`,
-      text: message,
-      html: `<p>${message}</p><p>From: ${name} (${email})</p>`,
+      subject: `New contact form message from ${safeName}`,
+      text: `${message}\n\nFrom: ${safeName} (${safeEmail})`,
+      html: `<p>${safeMessage}</p><p>From: ${safeName_html} (${safeEmail_html})</p>`,
     })
 
     return NextResponse.json(
