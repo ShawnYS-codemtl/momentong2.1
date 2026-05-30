@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 
 export type BagItem = {
   productId: string
@@ -26,6 +26,7 @@ const BagContext = createContext<BagContextType | null>(null)
 export function BagProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<BagItem[]>([])
   const [skipRehydrate, setSkipRehydrate] = useState(false)
+  const isFirstMount = useRef(true)
 
   // Load bag from localStorage on first mount
   useEffect(() => {
@@ -36,8 +37,13 @@ export function BagProvider({ children }: { children: React.ReactNode }) {
     }
   }, [skipRehydrate])
 
-  // Persist bag to localStorage
+  // Persist bag to localStorage — skip the initial mount so we don't
+  // overwrite stored items before the load effect has restored them.
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false
+      return
+    }
     localStorage.setItem('bag', JSON.stringify(items))
   }, [items])
 
