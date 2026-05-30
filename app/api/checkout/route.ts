@@ -10,6 +10,7 @@ type CartItem = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
+  try {
     const { items } = await req.json(); // [{ id, quantity, stock, is_available }]
 
     // Fetch stickers and validate stock
@@ -88,27 +89,6 @@ export async function POST(req: Request) {
       }
     }
 
-  // // Compute subtotal safely on server
-  // const line_items = await Promise.all(
-  //   items.map(async (item: CartItem) => {
-  //     const sticker = await getStickerById(item.id)
-
-  //     if (!sticker.is_available || sticker.stock < item.quantity) {
-  //       throw new Error(`Item "${sticker.title}" is unavailable or does not have enough stock.`)
-  //     }
-  
-  //     return {
-  //       price_data: {
-  //         currency: "cad",
-  //         product_data: { name: sticker.title },
-  //         unit_amount: sticker.price, // from server
-  //       },
-  //       quantity: item.quantity,
-  //       metadata: { sticker_id: sticker.sid }
-  //     }
-  //   })
-  // )
-
   const session = await stripe.checkout.sessions.create({
     ui_mode: "embedded",
     mode: "payment",
@@ -137,4 +117,12 @@ export async function POST(req: Request) {
   return NextResponse.json({
     clientSecret: session.client_secret,
   });
+
+  } catch (err: any) {
+    const isValidationError = err.message?.includes("unavailable") || err.message?.includes("out of stock")
+    return NextResponse.json(
+      { error: isValidationError ? err.message : "Unable to create checkout session. Please try again." },
+      { status: isValidationError ? 400 : 500 }
+    )
+  }
 }
