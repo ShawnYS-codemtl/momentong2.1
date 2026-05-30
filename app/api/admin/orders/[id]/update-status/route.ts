@@ -9,6 +9,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     const form = await req.formData()
     const status = form.get("status") as string
 
+    const VALID_STATUSES = ["paid", "processing", "shipped", "delivered", "cancelled"]
+    if (!status || !VALID_STATUSES.includes(status)) {
+        return NextResponse.json({ error: "Invalid status value" }, { status: 400 })
+    }
+
     // Authenticate admin
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -38,7 +43,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         .update({ status })
         .eq("id", id)
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) return NextResponse.json({ error: "Internal server error" }, { status: 500 })
 
     // Send shipped email exactly once
     if (

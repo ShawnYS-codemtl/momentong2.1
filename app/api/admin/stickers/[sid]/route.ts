@@ -70,7 +70,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
 
     if (deleteError) {
         return NextResponse.json(
-        { error: deleteError.message },
+        { error: "Internal server error" },
         { status: 500 }
         )
     }

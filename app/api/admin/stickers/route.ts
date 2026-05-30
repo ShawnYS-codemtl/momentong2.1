@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
         .eq("id", user.id)
         .single()
 
-    if (profileError) return NextResponse.json({ error: profileError.message }, { status: 500 })
+    if (profileError) return NextResponse.json({ error: "Internal server error" }, { status: 500 })
     if (!profile?.is_admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     // Fetch stickers
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
         .order("created_at", { ascending: false })
         .overrideTypes<StickerWithCollection[]>()
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) return NextResponse.json({ error: "Internal server error" }, { status: 500 })
 
     // Map to include collection name
     const formatted = stickers.map(sticker => ({
