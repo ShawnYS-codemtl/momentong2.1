@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import type { Sticker } from '@/types/sticker'
 
 type StickerFormProps = {
     mode: "create" | "edit"
-    initialData?: any   // sticker row from DB
+    initialData?: Partial<Sticker>
   }
 
 export default function StickerForm({mode, initialData}: StickerFormProps) {
