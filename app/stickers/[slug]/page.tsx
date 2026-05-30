@@ -24,8 +24,8 @@ export default async function StickerDetailPage({params} : Params){
                     {label: formatSlug(slug)}
                 ]}
             />
-            <div className="flex flex-col lg:flex-row my-8 gap-8 lg:gap-0 px-4 md:px-8 lg:px-[100px]">
-                <div className="sticker-detail-left flex justify-center lg:justify-start mx-auto relative">
+            <div className="flex flex-col lg:flex-row lg:items-start my-8 gap-8 lg:gap-0 px-4 md:px-8 lg:px-[100px]">
+                <div className="sticker-detail-left flex justify-center lg:justify-start mx-auto lg:mx-0 relative">
                     <Image
                         className="sticker-detail-img max-w-full h-auto sm:max-w-[280px] md:max-w-[340px] lg:max-w-none"
                         src={getStickerUrl(sticker.image_path)}
@@ -35,7 +35,7 @@ export default async function StickerDetailPage({params} : Params){
                         >
                     </Image>
                 </div>
-                <div className="sticker-detail-info px-0 lg:px-8 min-w-0">
+                <div className="sticker-detail-info px-0 lg:px-8 min-w-0 lg:flex-1">
                     <h2 className="mb-3">{sticker.title.toUpperCase()}</h2>
                     <h3 className="mb-4">$ {(sticker.price/100).toFixed(2)} CAD</h3>
                     <hr />
