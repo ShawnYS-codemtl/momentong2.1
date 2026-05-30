@@ -7,7 +7,7 @@ import type { Sticker } from '@/types/sticker'
 
 type StickerFormProps = {
     mode: "create" | "edit"
-    initialData?: Partial<Sticker>
+    initialData?: Sticker & { image_preview?: string }
   }
 
 export default function StickerForm({mode, initialData}: StickerFormProps) {
@@ -78,7 +78,7 @@ export default function StickerForm({mode, initialData}: StickerFormProps) {
         setDescription(initialData.description)
         setCollectionId(initialData.collection_id)
         setIsAvailable(initialData.is_available)
-        setPreviewUrl(initialData.image_preview) // existing svg
+        setPreviewUrl(initialData.image_preview ?? null) // existing svg
       }, [initialData])
 
     // Generate slug automatically when title changes
@@ -123,7 +123,7 @@ export default function StickerForm({mode, initialData}: StickerFormProps) {
                 return
             }
 
-            let storagePath = initialData?.imagePath
+            let storagePath = initialData?.image_path
 
             // Upload SVG to storage
             if (mode === "create" && file) {
@@ -157,7 +157,7 @@ export default function StickerForm({mode, initialData}: StickerFormProps) {
                 const { error } = await supabase
                   .from("stickers")
                   .update(stickerPayload)
-                  .eq("sid", initialData.sid)
+                  .eq("sid", initialData!.sid)
               
                 if (error) throw error
               }
