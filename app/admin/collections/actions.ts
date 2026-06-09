@@ -5,8 +5,27 @@ import { revalidatePath } from "next/cache"
 import { slugify } from "@/lib/utils/slugify"
 import { redirect } from "next/navigation"
 
-export async function deleteCollection(cid: string) {
+// Server Actions are public POST endpoints, so each must verify the caller is an
+// admin itself — the admin layout only gates pages, not action invocations.
+async function requireAdmin() {
     const supabase = await createClient()
+
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) redirect("/login")
+
+    const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single()
+
+    if (!profile?.is_admin) redirect("/")
+
+    return supabase
+}
+
+export async function deleteCollection(cid: string) {
+    const supabase = await requireAdmin()
 
     const { count } = await supabase
         .from("stickers")
@@ -30,7 +49,7 @@ export async function deleteCollection(cid: string) {
 }
 
 export async function createCollection(formData: FormData) {
-    const supabase = await createClient()
+    const supabase = await requireAdmin()
     const location = formData.get("name") as string
 
     const data = {
@@ -46,7 +65,7 @@ export async function createCollection(formData: FormData) {
 }
 
 export async function updateCollection(cid: string, formData: FormData) {
-    const supabase = await createClient()
+    const supabase = await requireAdmin()
     const data = {
         location: formData.get("name"),
         theme: formData.get("theme"),
