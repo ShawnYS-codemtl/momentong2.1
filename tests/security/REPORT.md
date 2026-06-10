@@ -1,9 +1,9 @@
-# Security Test Report — OWASP Top 10
+# Security Test Report — OWASP Top 10 (2025)
 
-Living report of security verification for **momentong2.1**. Defensive testing of our own
-site: we confirm controls hold rather than build offensive tooling. Tests live in
-`tests/security/` and are safe to run against the real backend (sentinel values, zero-UUID
-keys, no-op writes, auto-rollback).
+Living report of security verification for **momentong2.1**, tracked against the
+**OWASP Top 10:2025** ordering. Defensive testing of our own site: we confirm controls hold
+rather than build offensive tooling. Tests live in `tests/security/` and are safe to run
+against the real backend (sentinel values, zero-UUID keys, no-op writes, auto-rollback).
 
 **App context** (see also `tests/security/README.md`): Next.js 16 App Router, Supabase
 (auth + Postgres + RLS), Stripe, Resend/Nodemailer. **No buyer accounts** — checkout is
@@ -14,18 +14,18 @@ dashboard, not the repo).
 
 ## Status overview
 
-| Category | Status | Tested | Confirmed vulns | Hardening items open |
-|----------|--------|--------|-----------------|----------------------|
+| Category (2025) | Status | Tested | Confirmed vulns | Hardening items open |
+|-----------------|--------|--------|-----------------|----------------------|
 | A01 Broken Access Control | ✅ Verified | 2026-06-09 | 0 | 2 (anon write grants; RPC execute) |
-| A02 Cryptographic Failures | ⬜ Not started | — | — | — |
-| A03 Injection | ⬜ Not started | — | — | — |
-| A04 Insecure Design | ⬜ Not started | — | — | — |
-| A05 Security Misconfiguration | ⬜ Not started | — | — | — |
-| A06 Vulnerable & Outdated Components | ⬜ Not started | — | — | — |
-| A07 Identification & Authentication Failures | ⬜ Not started | — | — | — |
-| A08 Software & Data Integrity Failures | ⬜ Not started | — | — | — |
-| A09 Security Logging & Monitoring Failures | ⬜ Not started | — | — | — |
-| A10 Server-Side Request Forgery | ⬜ Not started | — | — | — |
+| A02 Security Misconfiguration | ✅ Verified | 2026-06-10 | 0 | 1 (enforce CSP after Report-Only observation) |
+| A03 Software Supply Chain Failures | ⬜ Not started | — | — | — |
+| A04 Cryptographic Failures | ⬜ Not started | — | — | — |
+| A05 Injection | ⬜ Not started | — | — | — |
+| A06 Insecure Design | ⬜ Not started | — | — | — |
+| A07 Authentication Failures | ⬜ Not started | — | — | — |
+| A08 Software or Data Integrity Failures | ⬜ Not started | — | — | — |
+| A09 Logging & Alerting Failures | ⬜ Not started | — | — | — |
+| A10 Mishandling of Exceptional Conditions | ⬜ Not started | — | — | — |
 
 Legend: ✅ Verified · 🟡 In progress · 🔴 Vulnerability found · ⬜ Not started
 
@@ -96,6 +96,77 @@ flip to PASS.
 - `app/admin/collections/actions.ts` — added `requireAdmin()` helper gating all three Server
   Actions (redirects to `/login` if unauthenticated, `/` if not admin), mirroring
   `app/admin/layout.tsx` and the `/api/admin/*` routes.
+
+---
+
+## A02 — Security Misconfiguration
+
+**Tested:** 2026-06-10 · **Test:** `tests/security/a02-security-misconfiguration.mjs` ·
+**Result (after fix):** 13 PASS / 1 WARN / 0 FAIL · **Verdict:** Hardened — security headers
+added; only remaining item is enforcing CSP after a Report-Only observation period.
+*(Initial scan was 7 PASS / 1 WARN / 6 FAIL — all 6 FAILs were missing headers, now fixed.)*
+
+### Threat model
+An anonymous visitor receiving our HTTP responses. Misconfiguration here means missing
+hardening headers (clickjacking/MIME/transport protections), tech/version disclosure, overly
+permissive CORS, verbose errors that leak internals, or server secrets accidentally shipped in
+the client bundle.
+
+### How we tested
+Runtime probes against a running server (`npm run dev`, or `npm run build && npm run start` for
+prod fidelity):
+- **Suite 1 — security headers:** assert presence/sanity of HSTS, CSP, clickjacking protection,
+  `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`; assert `X-Powered-By` absent.
+- **Suite 2 — verbose errors:** malformed requests to `/api/checkout`, `/api/contact`,
+  `/api/webhooks/stripe`; assert generic bodies (no stack traces / paths / internals).
+- **Suite 3 — info/debug:** CORS with a foreign `Origin` (no wildcard / reflection).
+- **Suite 4 — secret scan:** fetch `/`, `/checkout`, `/contact` + first-party JS; assert no
+  server-secret values from `.env.local` appear in client-served content.
+
+### Results
+
+| Check | Result (after fix) |
+|-------|--------|
+| Verbose errors (checkout/contact/webhook) | ✅ Generic — no stack traces or internals leaked |
+| CORS | ✅ Not permissive (no `Access-Control-Allow-Origin`) |
+| Server secrets in client bundle | ✅ None — scanned 3 pages + 35 JS assets, clean |
+| `Strict-Transport-Security` (HSTS) | ✅ Present (`max-age=63072000; includeSubDomains; preload`) |
+| `Content-Security-Policy` | 🟡 Present as **Report-Only** — enforce after observation |
+| Clickjacking (`X-Frame-Options` / CSP `frame-ancestors`) | ✅ `X-Frame-Options: DENY` (+ CSP `frame-ancestors 'none'`) |
+| `X-Content-Type-Options: nosniff` | ✅ Present |
+| `Referrer-Policy` | ✅ `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | ✅ `camera=(), microphone=(), geolocation=()` |
+| `X-Powered-By` disclosure | ✅ Removed (`poweredByHeader: false`) |
+
+### Static review findings
+
+| # | Location | Finding | Status |
+|---|----------|---------|--------|
+| 1 | `next.config.ts` | No `headers()` block — all security headers missing. | ✅ **Fixed** 2026-06-10 — added `headers()` (HSTS, XFO, nosniff, Referrer-Policy, Permissions-Policy, CSP Report-Only). |
+| 2 | `next.config.ts` | `poweredByHeader` not disabled → `X-Powered-By: Next.js`. | ✅ **Fixed** 2026-06-10 — `poweredByHeader: false`. |
+| 3 | `app/api/**` | Error responses are generic (no internals leaked). | ✅ Good |
+| 4 | `app/**`, `lib/**` | Server secrets only in server files; only `NEXT_PUBLIC_*` reaches client. | ✅ Good |
+| 5 | `app/api/contact/route.ts` | Hardened: header-injection stripping, HTML escaping, length/email validation. | ✅ Good |
+| 6 | `.gitignore` | `.env*` and `*.pem` ignored — secrets not committed. | ✅ Good |
+
+### Open hardening item (1 remaining)
+
+**Enforce the CSP.** It currently ships as `Content-Security-Policy-Report-Only`, so violations
+are reported but nothing is blocked. After an observation period with no legitimate violations:
+1. In `next.config.ts`, change the header key from `Content-Security-Policy-Report-Only` to
+   `Content-Security-Policy`.
+2. Verify Stripe embedded checkout (`/checkout`) and Supabase storage images still work.
+3. Re-run the test — the CSP check flips from WARN to PASS.
+
+Tighten further later by replacing `script-src 'unsafe-inline'` with a nonce (requires
+middleware to inject the nonce per request).
+
+### Remediation applied in code (2026-06-10)
+- `next.config.ts` — added `poweredByHeader: false` and a `headers()` block applying HSTS,
+  `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`,
+  `Permissions-Policy`, and a Stripe/Supabase-aware CSP in **Report-Only** mode.
+- Verified: all four customer pages (`/`, `/checkout`, `/contact`, `/stickers`) still return
+  200; A02 test went from 7 PASS / 6 FAIL to **13 PASS / 1 WARN / 0 FAIL**.
 
 ---
 

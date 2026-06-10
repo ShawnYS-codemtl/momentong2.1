@@ -1,9 +1,13 @@
-# Security tests — OWASP Top 10
+# Security tests — OWASP Top 10 (2025)
 
-Defensive verification tests for momentong2.1. Each script *probes our own app* to
-confirm that a class of access control actually holds. They are safe to run against the
-real backend: writes use sentinel values, target a non-existent zero-UUID key, or are
-no-ops, and any write that unexpectedly succeeds is rolled back automatically.
+Defensive verification tests for momentong2.1, organized by the **OWASP Top 10:2025**
+categories. Each script *probes our own app* to confirm that a class of control actually
+holds. They are safe to run against the real backend: writes use sentinel values, target a
+non-existent zero-UUID key, or are no-ops, and any write that unexpectedly succeeds is rolled
+back automatically.
+
+This file covers **how to run** each test. Findings and verdicts live in
+[`REPORT.md`](./REPORT.md).
 
 ## A01 — Broken Access Control
 
@@ -83,3 +87,50 @@ should return **401/403** and `/admin` pages should **redirect to `/login`**.
 | 5 | `orders` | Holds customer PII (email, name, address) — primary asset RLS must protect. | — |
 | 6 | — | No RLS policies in the repo; live testing is mandatory. | Must test |
 | 7 | `app/api/admin/orders/[id]/update-status/route.ts:27` | Returns 401 for a forbidden (authenticated-non-admin) caller; should be 403. | Minor |
+
+## A02 — Security Misconfiguration
+
+`a02-security-misconfiguration.mjs`
+
+### Why this test exists
+
+Verifies HTTP-level hardening that code review can't fully confirm: security headers, error
+verbosity, tech disclosure, CORS, and whether any server secret accidentally ships to the
+client. These are runtime properties, so the test probes a running server.
+
+### Run it
+
+```bash
+# Most accurate — prod headers + real client bundle:
+npm run build && npm run start      # one terminal
+node tests/security/a02-security-misconfiguration.mjs
+
+# Quick dev check (next.config headers apply in dev too):
+npm run dev
+node tests/security/a02-security-misconfiguration.mjs
+```
+
+Targets `NEXT_PUBLIC_SITE_URL` (or `http://localhost:3000`) and reads secret values from
+`.env.local` for the leak scan. Exits non-zero if any **FAIL**.
+
+### What it checks
+
+- **Suite 1 — security headers:** HSTS, CSP, clickjacking (`X-Frame-Options`/CSP
+  `frame-ancestors`), `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`,
+  and that `X-Powered-By` is **absent**.
+- **Suite 2 — verbose errors:** malformed requests to `/api/checkout`, `/api/contact`,
+  `/api/webhooks/stripe` must return generic bodies (no stack traces / file paths / internals).
+- **Suite 3 — info/debug:** CORS with a foreign `Origin` must not wildcard or reflect.
+- **Suite 4 — secret scan:** `/`, `/checkout`, `/contact` + first-party JS must not contain any
+  server-secret value from `.env.local`.
+
+### Reading the results
+
+- **PASS** — control present/correct.
+- **FAIL** — missing protection, info disclosure, or a secret leak.
+- **WARN** — present-but-weak, lower-priority, or indeterminate (e.g. missing
+  `Permissions-Policy`).
+
+> Current baseline (2026-06-10, after the headers fix): **13 PASS / 1 WARN / 0 FAIL**. The lone
+> WARN is the intentional Report-Only CSP — see [`REPORT.md`](./REPORT.md) under A02 for the
+> remaining "enforce CSP after observation" step.
