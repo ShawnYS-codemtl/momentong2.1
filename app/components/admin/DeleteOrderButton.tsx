@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-export default function DeleteOrderButton({ orderId }: { orderId: string }) {
+export default function DeleteOrderButton({ orderId, redirectTo }: { orderId: string; redirectTo?: string }) {
     const router = useRouter()
     const [error, setError] = useState<string | null>(null)
     const [deleting, setDeleting] = useState(false)
@@ -15,10 +15,13 @@ export default function DeleteOrderButton({ orderId }: { orderId: string }) {
         try {
             const res = await fetch(`/api/admin/orders/${orderId}`, { method: "DELETE" })
             if (!res.ok) throw new Error("Failed to delete order")
-            router.push("/admin/orders")
-            router.refresh()
+            // From the detail page, navigate to the list (the order no longer
+            // exists). From the list page, just refresh to drop the deleted row.
+            if (redirectTo) router.push(redirectTo)
+            else router.refresh()
         } catch {
             setError("Failed to delete order. Please try again.")
+        } finally {
             setDeleting(false)
         }
     }

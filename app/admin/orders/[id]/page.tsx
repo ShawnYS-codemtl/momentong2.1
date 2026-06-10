@@ -165,7 +165,7 @@ export default async function OrderDetailPage({
             {/* Delete order */}
             <section className="border border-red-200 rounded-lg p-6">
               <h2 className="font-semibold mb-4 text-red-700">Danger Zone</h2>
-              <DeleteOrderButton orderId={order.id} />
+              <DeleteOrderButton orderId={order.id} redirectTo="/admin/orders" />
             </section>
           </div>
         </div>

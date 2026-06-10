@@ -18,12 +18,17 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
         return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const { error } = await supabase
+    // Delete is RLS-scoped; an admin DELETE policy on orders authorizes this.
+    // .select() lets us detect a no-op (zero rows) and report it instead of a
+    // false success.
+    const { data: deleted, error } = await supabase
         .from("orders")
         .delete()
         .eq("id", id)
+        .select("id")
 
     if (error) return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    if (!deleted?.length) return NextResponse.json({ error: "Order not found" }, { status: 404 })
 
     return NextResponse.json({ success: true })
 }
